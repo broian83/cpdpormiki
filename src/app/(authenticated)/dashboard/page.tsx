@@ -137,15 +137,15 @@ export default async function DashboardPage() {
           icon={<MessageSquare className="w-6 h-6" />}
           label="Pesan Baru"
           value={stats.unreadMessages}
-          color="bg-amber-50 text-amber-600"
-          trend="Butuh tindakan"
+          color="bg-blue-50 text-blue-600"
+          trend="Perlu dibaca"
         />
         <StatCard 
           icon={<Zap className="w-6 h-6" />}
           label="Tagihan Aktif"
           value={stats.unpaidInvoices.length}
-          color="bg-rose-50 text-rose-600"
-          trend={stats.unpaidInvoices.length > 0 ? "Segera lunasi" : "Sudah lunas"}
+          color="bg-slate-50 text-slate-600"
+          trend={stats.unpaidInvoices.length > 0 ? "Tertunda" : "Terbayar"}
         />
       </div>
 
@@ -164,28 +164,28 @@ export default async function DashboardPage() {
               title="Private Area"
               desc="Kelola dokumen & file pribadi"
               icon={<LayoutDashboard className="w-6 h-6" />}
-              color="from-teal-500 to-emerald-600"
+              color="from-teal-600 to-teal-500"
             />
             <QuickActionCard 
               href="/lms"
               title="Portal LMS"
               desc="Belajar & kembangkan skill"
               icon={<BookOpen className="w-6 h-6" />}
-              color="from-indigo-500 to-purple-600"
+              color="from-indigo-600 to-indigo-500"
             />
             <QuickActionCard 
               href="/cv"
               title="CV Builder"
               desc="Generasi CV otomatis"
               icon={<BarChart3 className="w-6 h-6" />}
-              color="from-rose-500 to-orange-600"
+              color="from-slate-800 to-slate-700"
             />
             <QuickActionCard 
               href="/profile"
               title="Pengaturan Profil"
               desc="Perbarui data diri Anda"
               icon={<User className="w-6 h-6" />}
-              color="from-blue-500 to-cyan-600"
+              color="from-teal-500 to-indigo-600"
             />
           </div>
         </div>
@@ -207,14 +207,14 @@ export default async function DashboardPage() {
               {stats.unpaidInvoices.length > 0 ? (
                 <div className="space-y-4">
                   {stats.unpaidInvoices.map((invoice) => (
-                    <div key={invoice.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100 group hover:border-rose-200 transition-all cursor-pointer">
+                    <div key={invoice.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100 group hover:border-indigo-200 transition-all cursor-pointer">
                       <div>
                         <p className="font-bold text-slate-900">{invoice.jenis_iuran}</p>
                         <p className="text-xs text-slate-500">{invoice.periode}</p>
                       </div>
                       <div className="text-right">
-                        <p className="font-black text-rose-600">Rp {invoice.nominal.toLocaleString('id-ID')}</p>
-                        <span className="text-[10px] font-bold uppercase text-rose-400">Belum Bayar</span>
+                        <p className="font-black text-indigo-600">Rp {invoice.nominal.toLocaleString('id-ID')}</p>
+                        <span className="text-[10px] font-bold uppercase text-indigo-400">Belum Bayar</span>
                       </div>
                     </div>
                   ))}
