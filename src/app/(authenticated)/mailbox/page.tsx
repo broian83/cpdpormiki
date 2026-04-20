@@ -3,8 +3,6 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import { Mail, Search, Trash2, MailOpen, Inbox, Send } from 'lucide-react'
 import { Input } from '@/components/ui/input'
@@ -49,40 +47,42 @@ export default function MailboxPage() {
   const unreadCount = messages.filter(m => !m.is_read).length
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
-            Mailbox
-            {unreadCount > 0 && (
-              <span className="inline-flex items-center justify-center bg-indigo-600 text-white text-xs font-bold px-2.5 py-0.5 rounded-full ring-4 ring-indigo-50">
-                {unreadCount} Baru
-              </span>
-            )}
-          </h2>
-          <p className="text-slate-500 mt-1">Pesan resmi dan notifikasi sistem dari DPP PORMIKI.</p>
+    <div className="space-y-8 pb-16 animate-in fade-in duration-500">
+      <div className="pt-6 border-b border-[#EFEFEF] pb-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <h1 className="text-4xl font-serif font-semibold text-notion-text mb-4 tracking-tight flex items-center gap-3">
+              Mailbox
+              {unreadCount > 0 && (
+                <span className="inline-flex items-center justify-center bg-notion-red_bg text-notion-red text-xs font-semibold px-2 py-0.5 rounded-sm">
+                  {unreadCount} Baru
+                </span>
+              )}
+            </h1>
+            <p className="text-notion-gray text-lg max-w-2xl leading-relaxed">Pesan resmi dan notifikasi sistem dari DPP PORMIKI.</p>
+          </div>
+          <Link href="/mailbox/compose">
+            <Button className="bg-notion-blue text-white hover:bg-notion-blue/90 rounded-sm h-9 px-5 font-medium shadow-none transition-colors">
+              <Send className="w-4 h-4 mr-2" />
+              Tulis Pesan Baru
+            </Button>
+          </Link>
         </div>
-        <Link href="/mailbox/compose">
-          <Button className="bg-teal-600 hover:bg-teal-700 shadow-md rounded-xl h-11 px-6 font-bold text-white">
-            <Send className="w-4 h-4 mr-2" />
-            Tulis Pesan Baru
-          </Button>
-        </Link>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Sidebar Mini */}
-        <div className="lg:col-span-1 space-y-2">
-          <Button variant="secondary" className="w-full justify-start font-bold bg-white border border-slate-200">
-            <Inbox className="w-4 h-4 mr-2 text-primary" />
+        <div className="lg:col-span-1 space-y-1">
+          <Button variant="ghost" className="w-full justify-start font-medium bg-stone-50 text-notion-text hover:bg-stone-100 rounded-sm h-9">
+            <Inbox className="w-4 h-4 mr-2 opacity-70" />
             Kotak Masuk
           </Button>
-          <Button variant="ghost" className="w-full justify-start text-slate-500 hover:bg-slate-100">
-            <Send className="w-4 h-4 mr-2" />
+          <Button variant="ghost" className="w-full justify-start text-notion-gray hover:text-notion-text hover:bg-stone-50 font-medium rounded-sm h-9">
+            <Send className="w-4 h-4 mr-2 opacity-70" />
             Terkirim
           </Button>
-          <Button variant="ghost" className="w-full justify-start text-slate-500 hover:bg-slate-100">
-            <Trash2 className="w-4 h-4 mr-2" />
+          <Button variant="ghost" className="w-full justify-start text-notion-gray hover:text-notion-text hover:bg-stone-50 font-medium rounded-sm h-9">
+            <Trash2 className="w-4 h-4 mr-2 opacity-70" />
             Sampah
           </Button>
         </div>
@@ -90,62 +90,60 @@ export default function MailboxPage() {
         {/* Inbox Content */}
         <div className="lg:col-span-3 space-y-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-notion-gray" />
             <Input 
               placeholder="Cari pesan atau pengirim..." 
-              className="pl-10 bg-white border-none shadow-sm focus:ring-primary"
+              className="pl-9 bg-white border-[#EFEFEF] shadow-none h-9 rounded-sm focus-visible:ring-0 focus-visible:border-notion-gray text-[15px]"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
 
-          <Card className="border-none shadow-md bg-white overflow-hidden">
-            <CardContent className="p-0">
+          <div className="border border-[#EFEFEF] bg-white rounded-md overflow-hidden min-h-[400px]">
               {isLoading ? (
-                <div className="p-20 text-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-                  <p className="text-slate-500">Memeriksa pesan baru...</p>
+                <div className="p-20 text-center flex flex-col items-center">
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-notion-gray mx-auto mb-4"></div>
+                  <p className="text-notion-gray text-sm font-medium">Memeriksa pesan baru...</p>
                 </div>
               ) : filteredMessages.length === 0 ? (
                 <div className="p-20 text-center flex flex-col items-center">
-                  <Mail className="h-12 w-12 text-slate-200 mb-4" />
-                  <p className="text-slate-900 font-bold text-lg">Tidak ada pesan</p>
-                  <p className="text-slate-500 max-w-xs mt-1">Kotak masuk Anda dalam keadaan kosong atau tidak ada pesan yang sesuai pencarian.</p>
+                  <Mail className="h-8 w-8 text-notion-gray opacity-30 mb-4" />
+                  <p className="text-notion-text font-semibold text-[15px]">Tidak ada pesan</p>
+                  <p className="text-notion-gray text-sm max-w-xs mt-1 leading-relaxed">Kotak masuk Anda dalam keadaan kosong atau tidak ada pesan yang sesuai pencarian.</p>
                 </div>
               ) : (
-                <div className="divide-y divide-slate-50">
+                <div className="divide-y divide-[#EFEFEF]">
                   {filteredMessages.map(msg => (
                     <div 
                       key={msg.id} 
-                      className={`p-5 hover:bg-slate-50/80 transition-all cursor-pointer relative group ${!msg.is_read ? 'bg-indigo-50/30' : ''}`}
+                      className={`p-4 hover:bg-stone-50 transition-colors cursor-pointer relative group flex gap-3 ${!msg.is_read ? 'bg-notion-blue_bg' : ''}`}
                     >
-                      <div className="flex items-start gap-4">
-                        <div className={`mt-1 h-2 w-2 rounded-full flex-shrink-0 ${!msg.is_read ? 'bg-teal-600 animate-pulse' : 'bg-transparent'}`} />
+                      <div className="flex-1 min-w-0 flex items-start gap-3">
+                         <div className={`mt-1.5 h-1.5 w-1.5 rounded-full flex-shrink-0 ${!msg.is_read ? 'bg-notion-blue' : 'bg-transparent'}`} />
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between mb-1">
-                            <h3 className={`text-sm tracking-tight truncate ${!msg.is_read ? 'font-black text-slate-900' : 'font-medium text-slate-600'}`}>
+                          <div className="flex items-center justify-between mb-0.5">
+                            <h3 className={`text-[15px] truncate ${!msg.is_read ? 'font-semibold text-notion-text' : 'font-medium text-notion-text'}`}>
                               {msg.subject}
                             </h3>
-                            <span className="text-xs text-slate-400 whitespace-nowrap ml-4">
+                            <span className="text-xs text-notion-gray whitespace-nowrap ml-4">
                               {new Date(msg.sent_at).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })}
                             </span>
                           </div>
-                          <p className="text-sm text-slate-500 line-clamp-1 group-hover:text-slate-700 transition-colors">
+                          <p className="text-sm text-notion-gray line-clamp-1 pr-8">
                             {msg.body}
                           </p>
                         </div>
-                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity ml-4">
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-slate-400 hover:text-rose-600" onClick={(e) => { e.stopPropagation(); handleDelete(msg.id); }}>
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </div>
+                      </div>
+                      <div className="flex items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-notion-gray hover:text-notion-red hover:bg-notion-red_bg rounded-sm" onClick={(e) => { e.stopPropagation(); handleDelete(msg.id); }}>
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
                       </div>
                     </div>
                   ))}
                 </div>
               )}
-            </CardContent>
-          </Card>
+          </div>
         </div>
       </div>
     </div>

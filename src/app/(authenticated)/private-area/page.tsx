@@ -3,8 +3,8 @@
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { FileUp, File, ShieldAlert, Download, Trash2 } from 'lucide-react'
 
 interface Document {
   id: string
@@ -31,104 +31,99 @@ export default function PrivateAreaPage() {
   }, [])
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in duration-500">
-      {/* Header Section */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Private Area</h2>
-          <p className="text-slate-500 mt-1">Kelola dan simpan dokumen profesional Anda dengan aman.</p>
+    <div className="space-y-12 pb-16 animate-in fade-in duration-500">
+      {/* Title Section */}
+      <div className="pt-6 border-b border-[#EFEFEF] pb-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <h1 className="text-4xl font-serif font-semibold text-notion-text mb-4 tracking-tight">Private Area</h1>
+            <p className="text-notion-gray text-lg max-w-2xl leading-relaxed">
+              Kelola dan simpan dokumen profesional Anda dengan aman, tersedia kapanpun dibutuhkan.
+            </p>
+          </div>
+          <Button className="bg-notion-blue text-white hover:bg-notion-blue/90 rounded-sm h-9 px-5 font-medium shadow-none transition-colors">
+            <FileUp className="w-4 h-4 mr-2" />
+            Unggah Dokumen
+          </Button>
         </div>
-        <Button className="bg-teal-600 hover:bg-teal-700 shadow-lg shadow-teal-100 transition-all duration-300">
-          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
-          Unggah Dokumen
-        </Button>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {[
-          { label: 'Total Dokumen', value: '0', color: 'bg-blue-50 text-blue-600' },
-          { label: 'Penyimpanan Digunakan', value: '0 MB', color: 'bg-purple-50 text-purple-600' },
-          { label: 'Batas Penyimpanan', value: '100 MB', color: 'bg-amber-50 text-amber-600' },
+          { label: 'Total Dokumen', value: '0', color: 'bg-stone-50 border-[#EFEFEF]' },
+          { label: 'Penyimpanan Digunakan', value: '0 MB', color: 'bg-stone-50 border-[#EFEFEF]' },
+          { label: 'Batas Penyimpanan', value: '100 MB', color: 'bg-stone-50 border-[#EFEFEF]' },
         ].map((stat, i) => (
-          <Card key={i} className="border-none shadow-sm bg-white overflow-hidden">
-            <CardContent className="p-6">
-              <p className="text-sm font-medium text-slate-500">{stat.label}</p>
-              <h3 className={`text-2xl font-bold mt-2 ${stat.color.split(' ')[1]}`}>{stat.value}</h3>
-            </CardContent>
-          </Card>
+          <div key={i} className={`p-5 rounded-md border text-left flex flex-col justify-between min-h-[100px] ${stat.color}`}>
+              <span className="text-sm text-notion-gray font-medium mb-3">{stat.label}</span>
+              <span className="text-2xl font-semibold text-notion-text">{stat.value}</span>
+          </div>
         ))}
       </div>
 
       {/* Main Content Area */}
-      <Card className="border-none shadow-xl shadow-slate-200/50 bg-white rounded-2xl overflow-hidden">
-        <CardContent className="p-0">
+      <div>
+        <div className="flex items-center gap-2 border-b border-[#EFEFEF] pb-2 mb-4">
+          <File className="w-5 h-5 text-notion-text opacity-70" />
+          <h2 className="text-xl font-serif font-semibold text-notion-text">Sistem Berkas</h2>
+        </div>
+        
+        <div className="border border-[#EFEFEF] bg-white rounded-md overflow-hidden min-h-[300px]">
           {isLoading ? (
-            <div className="flex flex-col items-center justify-center py-20 space-y-4">
-              <div className="w-10 h-10 border-4 border-teal-100 border-t-teal-600 rounded-full animate-spin"></div>
-              <p className="text-slate-400 font-medium tracking-wide">Menyiapkan berkas pribadi Anda...</p>
+            <div className="flex flex-col items-center justify-center p-20">
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-notion-gray mb-4"></div>
+              <p className="text-sm text-notion-gray font-medium">Memuat berkas...</p>
             </div>
           ) : documents.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-24 px-6 text-center">
-              <div className="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mb-6">
-                <svg className="w-12 h-12 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-                </svg>
+            <div className="flex flex-col items-center justify-center py-20 px-6 text-center">
+              <div className="w-16 h-16 bg-stone-50 rounded-sm flex items-center justify-center border border-[#EFEFEF] mb-6">
+                 <File className="w-8 h-8 text-notion-gray opacity-50" />
               </div>
-              <h3 className="text-xl font-bold text-slate-900">Belum ada dokumen</h3>
-              <p className="text-slate-500 mt-2 max-w-sm mx-auto">
+              <h3 className="text-[15px] font-semibold text-notion-text mb-2">Belum ada dokumen</h3>
+              <p className="text-sm text-notion-gray max-w-sm mx-auto mb-6 leading-relaxed">
                 Anda belum mengunggah dokumen apapun. Mulai dengan mengunggah ijazah, STR, atau sertifikat kompetensi Anda.
               </p>
-              <Button variant="outline" className="mt-8 border-slate-200 hover:bg-slate-50">
-                Pelajari Tentang Penyimpanan Aman
-              </Button>
             </div>
           ) : (
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-[#EFEFEF]">
               {documents.map(doc => (
-                <div key={doc.id} className="p-4 hover:bg-slate-50 transition-colors flex items-center justify-between group">
+                <div key={doc.id} className="p-4 hover:bg-stone-50 transition-colors flex items-center justify-between group">
                   <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-teal-50 flex items-center justify-center text-teal-600">
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                      </svg>
+                    <div className="opacity-60 text-notion-blue">
+                       <File className="w-5 h-5" />
                     </div>
                     <div>
-                      <p className="font-semibold text-slate-900">{doc.name}</p>
-                      <p className="text-xs text-slate-500 uppercase tracking-wider font-bold mt-0.5">{doc.type} • {doc.size || '0 KB'}</p>
+                      <p className="font-medium text-[15px] text-notion-text">{doc.name}</p>
+                      <p className="text-xs text-notion-gray font-medium mt-0.5 uppercase tracking-wider">{doc.type} • {doc.size || '0 KB'}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Button variant="ghost" size="sm" className="text-slate-400 hover:text-teal-600">
-                      Unduh
+                    <Button variant="outline" size="sm" className="h-8 border-[#EFEFEF] text-notion-text hover:bg-stone-100 shadow-none rounded-sm">
+                      <Download className="w-3 h-3 mr-1" /> Unduh
                     </Button>
-                    <Button variant="ghost" size="sm" className="text-slate-400 hover:text-red-600">
-                      Hapus
+                    <Button variant="outline" size="sm" className="h-8 border-[#EFEFEF] text-notion-red hover:bg-notion-red_bg shadow-none rounded-sm">
+                      <Trash2 className="w-3 h-3" />
                     </Button>
                   </div>
                 </div>
               ))}
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
       
-      {/* Information Alert */}
-      <div className="bg-indigo-600 rounded-2xl p-8 text-white flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden relative shadow-xl shadow-indigo-100">
-         <div className="relative z-10">
-           <h4 className="text-xl font-bold">Butuh Bantuan Navigasi?</h4>
-           <p className="text-indigo-100 mt-2 max-w-md">Dokumen yang Anda unggah di sini tidak akan dibagikan kepada siapapun kecuali Anda melampirkannya pada permohonan STR atau Logbook.</p>
+      {/* Information Alert (Notion Callout) */}
+      <div className="bg-notion-blue_bg border border-[#EFEFEF] rounded-md p-5 flex gap-3 text-notion-text">
+         <div className="text-notion-blue mt-0.5">
+           <ShieldAlert className="w-5 h-5" />
          </div>
-         <div className="flex gap-3 relative z-10">
-           <Button className="bg-white text-indigo-600 hover:bg-indigo-50 border-none font-bold px-6">
-             Hubungi Support
-           </Button>
+         <div>
+           <h4 className="font-medium text-[15px] mb-1">Penyimpanan Aman Terenkripsi</h4>
+           <p className="text-sm text-notion-gray leading-relaxed max-w-2xl">
+             Dokumen yang Anda unggah di Private Area bersifat rahasia dan tidak akan dibagikan kepada siapapun kecuali Anda secara spesifik melampirkannya pada permohonan layanan.
+           </p>
          </div>
-         {/* Simple background decoration */}
-         <div className="absolute top-0 right-0 -mr-10 -mt-10 w-40 h-40 bg-indigo-500 rounded-full opacity-50 shadow-inner"></div>
-         <div className="absolute bottom-0 left-0 -ml-8 -mb-8 w-20 h-20 bg-indigo-700 rounded-full opacity-30 shadow-inner"></div>
       </div>
     </div>
   )

@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { Card, CardContent } from '@/components/ui/card'
 import { FileText, GraduationCap, Briefcase, Award, Users, Save, CheckCircle2, FileDown } from 'lucide-react'
 
 export default function CvPage() {
@@ -55,39 +54,40 @@ export default function CvPage() {
 
   if (isLoading) return (
     <div className="flex h-64 items-center justify-center">
-      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-notion-gray"></div>
     </div>
   )
 
   return (
-    <div className="max-w-5xl mx-auto space-y-8 pb-12">
+    <div className="space-y-12 pb-16 animate-in fade-in duration-500">
       {/* Page Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div>
-          <h2 className="text-3xl font-black text-slate-900 tracking-tight flex items-center gap-3">
-            <FileText className="w-8 h-8 text-primary" />
-            CV Generator
-          </h2>
-          <p className="text-slate-500 mt-1">Lengkapi data profesional Anda untuk pembuatan CV otomatis.</p>
-        </div>
-        <div className="flex gap-3">
-           <Button variant="outline" className="border-slate-200 rounded-xl">
-             <FileDown className="w-4 h-4 mr-2" />
-             Preview PDF
-           </Button>
-           <Button onClick={handleSave} disabled={isSaving} className="bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 rounded-xl px-8 font-bold">
-            {isSaving ? 'Menyimpan...' : (saveStatus === 'success' ? 'Tersimpan!' : 'Simpan Perubahan')}
-            {saveStatus === 'success' && <CheckCircle2 className="w-4 h-4 ml-2" />}
-            {!isSaving && saveStatus === 'idle' && <Save className="w-4 h-4 ml-2" />}
-          </Button>
+      <div className="pt-6 border-b border-[#EFEFEF] pb-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <h1 className="text-4xl font-serif font-semibold text-notion-text mb-4 tracking-tight flex items-center gap-3">
+              CV Generator
+            </h1>
+            <p className="text-notion-gray text-lg max-w-2xl leading-relaxed">Lengkapi data profesional Anda untuk pembuatan resume otomatis yang terstandarisasi.</p>
+          </div>
+          <div className="flex gap-3">
+             <Button variant="outline" className="border-[#EFEFEF] text-notion-text hover:bg-stone-50 rounded-sm shadow-none h-9">
+               <FileDown className="w-4 h-4 mr-2 opacity-70" />
+               Preview PDF
+             </Button>
+             <Button onClick={handleSave} disabled={isSaving} className="bg-notion-blue text-white hover:bg-notion-blue/90 shadow-none rounded-sm px-6 font-medium h-9 transition-colors">
+              {isSaving ? 'Menyimpan...' : (saveStatus === 'success' ? 'Tersimpan!' : 'Simpan Mode')}
+              {saveStatus === 'success' && <CheckCircle2 className="w-4 h-4 ml-2" />}
+              {!isSaving && saveStatus === 'idle' && <Save className="w-4 h-4 ml-2" />}
+            </Button>
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 space-y-6">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 items-start">
+        <div className="xl:col-span-2 space-y-6">
           {/* Ringkasan */}
           <SectionCard 
-            icon={<FileText className="w-5 h-5" />} 
+            icon={<FileText className="w-5 h-5 opacity-70" />} 
             title="Ringkasan Profesional" 
             description="Perkenalkan diri Anda secara singkat dan padat."
           >
@@ -95,13 +95,13 @@ export default function CvPage() {
               value={cv.ringkasan || ''} 
               onChange={(e) => setCv({...cv, ringkasan: e.target.value })} 
               placeholder="Contoh: Profesional Rekam Medis dengan pengalaman 5 tahun di RSUD..." 
-              className="min-h-[150px] border-slate-100 bg-slate-50/50 focus:bg-white transition-all rounded-2xl resize-none py-4"
+              className="min-h-[140px] border-[#EFEFEF] bg-white focus-visible:ring-0 focus-visible:border-notion-gray transition-colors rounded-sm resize-none p-4 text-[15px] shadow-none"
             />
           </SectionCard>
 
           {/* Pendidikan */}
           <SectionCard 
-            icon={<GraduationCap className="w-5 h-5" />} 
+            icon={<GraduationCap className="w-5 h-5 opacity-70" />} 
             title="Riwayat Pendidikan" 
             description="Sebutkan pendidikan formal terakhir Anda."
           >
@@ -109,13 +109,13 @@ export default function CvPage() {
               value={cv.pendidikan || ''} 
               onChange={(e) => setCv({...cv, pendidikan: e.target.value })} 
               placeholder="Contoh: D3 Rekam Medis & Informasi Kesehatan - Poltekkes Jakarta (2015-2018)" 
-              className="min-h-[120px] border-slate-100 bg-slate-50/50 focus:bg-white transition-all rounded-2xl resize-none py-4"
+              className="min-h-[120px] border-[#EFEFEF] bg-white focus-visible:ring-0 focus-visible:border-notion-gray transition-colors rounded-sm resize-none p-4 text-[15px] shadow-none"
             />
           </SectionCard>
 
           {/* Pengalaman Kerja */}
           <SectionCard 
-            icon={<Briefcase className="w-5 h-5" />} 
+            icon={<Briefcase className="w-5 h-5 opacity-70" />} 
             title="Pengalaman Kerja" 
             description="Daftar riwayat pekerjaan Anda dari yang terbaru."
           >
@@ -123,46 +123,45 @@ export default function CvPage() {
               value={cv.pengalaman_kerja || ''} 
               onChange={(e) => setCv({...cv, pengalaman_kerja: e.target.value })} 
               placeholder="Contoh: Koordinator Rekam Medis - RS Harapan Bangsa (2019-Sekarang)" 
-              className="min-h-[150px] border-slate-100 bg-slate-50/50 focus:bg-white transition-all rounded-2xl resize-none py-4"
+              className="min-h-[140px] border-[#EFEFEF] bg-white focus-visible:ring-0 focus-visible:border-notion-gray transition-colors rounded-sm resize-none p-4 text-[15px] shadow-none"
             />
           </SectionCard>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-6 xl:sticky xl:top-24">
           {/* Sertifikasi */}
           <SectionCard 
-            icon={<Award className="w-5 h-5" />} 
+            icon={<Award className="w-5 h-5 opacity-70" />} 
             title="Sertifikasi & Pelatihan"
           >
             <Textarea 
               value={cv.sertifikasi || ''} 
               onChange={(e) => setCv({...cv, sertifikasi: e.target.value })} 
-              placeholder="Sertifikasi STR, Pelatihan ICD-10, dll." 
-              className="min-h-[120px] border-slate-100 bg-slate-50/50 focus:bg-white transition-all rounded-2xl resize-none py-4"
+              placeholder="STR Aktif, Pelatihan ICD-10/11, Coding BPJS, dll." 
+              className="min-h-[120px] border-[#EFEFEF] bg-white focus-visible:ring-0 focus-visible:border-notion-gray transition-colors rounded-sm resize-none p-4 text-[15px] shadow-none"
             />
           </SectionCard>
 
           {/* Organisasi */}
           <SectionCard 
-            icon={<Users className="w-5 h-5" />} 
+            icon={<Users className="w-5 h-5 opacity-70" />} 
             title="Pengalaman Organisasi"
           >
             <Textarea 
               value={cv.organisasi || ''} 
               onChange={(e) => setCv({...cv, organisasi: e.target.value })} 
-              placeholder="Keanggotaan PORMIKI atau organisasi lainnya." 
-              className="min-h-[120px] border-slate-100 bg-slate-50/50 focus:bg-white transition-all rounded-2xl resize-none py-4"
+              placeholder="Keanggotaan PORMIKI aktif atau panitia acara nasional." 
+              className="min-h-[120px] border-[#EFEFEF] bg-white focus-visible:ring-0 focus-visible:border-notion-gray transition-colors rounded-sm resize-none p-4 text-[15px] shadow-none"
             />
           </SectionCard>
 
           {/* Tips Card */}
-          <div className="bg-indigo-50 border border-indigo-100 rounded-[2rem] p-8">
-            <h4 className="text-indigo-900 font-bold mb-3 flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></div>
-              Tips Profesional
+          <div className="bg-stone-50 border border-[#EFEFEF] rounded-md p-5 mt-8">
+            <h4 className="text-notion-text font-semibold mb-2 flex items-center gap-2 text-[15px]">
+              💡 Tips Resume Notion-Style
             </h4>
-            <p className="text-sm text-indigo-700 leading-relaxed italic">
-              "Gunakan bahasa formal dan pastikan detail kontak serta nomor anggota Anda sudah benar di halaman profil untuk hasil CV yang maksimal."
+            <p className="text-sm text-notion-gray leading-relaxed">
+              Gunakan poin bulat (bullet points) seperti simbol "-" untuk menjabarkan pengalaman Anda. Pastikan nama lengkap dan info kontak Anda sesuai di halaman profil dasar.
             </p>
           </div>
         </div>
@@ -173,19 +172,19 @@ export default function CvPage() {
 
 function SectionCard({ icon, title, description, children }: { icon: React.ReactNode, title: string, description?: string, children: React.ReactNode }) {
   return (
-    <Card className="border-none shadow-xl shadow-slate-100 bg-white rounded-3xl overflow-hidden">
-      <div className="p-6 md:p-8 flex flex-col gap-6">
-        <div className="flex items-start gap-4">
-          <div className="p-3 bg-teal-50 text-teal-600 rounded-2xl">
-            {icon}
-          </div>
-          <div>
-            <h3 className="text-xl font-bold text-slate-900">{title}</h3>
-            {description && <p className="text-sm text-slate-500 mt-1">{description}</p>}
-          </div>
+    <div className="border border-[#EFEFEF] bg-white rounded-md overflow-hidden">
+      <div className="p-5 flex items-center gap-3 border-b border-[#EFEFEF] bg-stone-50/50">
+        <div className="text-notion-text">
+          {icon}
         </div>
+        <div>
+          <h3 className="text-[15px] font-semibold text-notion-text">{title}</h3>
+          {description && <p className="text-xs text-notion-gray mt-0.5">{description}</p>}
+        </div>
+      </div>
+      <div className="p-5 bg-stone-50/30">
         {children}
       </div>
-    </Card>
+    </div>
   )
 }

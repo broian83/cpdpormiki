@@ -4,8 +4,7 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Bell, Globe, Moon, Shield, Save, CheckCircle2, Languages, Monitor } from 'lucide-react'
+import { Bell, Globe, Monitor, Shield, Save, CheckCircle2, Languages } from 'lucide-react'
 import { Switch } from '@/components/ui/switch'
 
 interface Settings {
@@ -57,45 +56,47 @@ export default function SettingsPage() {
 
   if (isLoading) return (
     <div className="flex h-64 items-center justify-center">
-      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-notion-gray"></div>
     </div>
   )
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 pb-12">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div>
-          <h2 className="text-3xl font-black text-slate-900 tracking-tight">Pengaturan Akun</h2>
-          <p className="text-slate-500 mt-1">Kelola preferensi akun dan keamanan Anda.</p>
+    <div className="max-w-4xl space-y-12 pb-16 animate-in fade-in duration-500">
+      <div className="pt-6 border-b border-[#EFEFEF] pb-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <h1 className="text-4xl font-serif font-semibold text-notion-text mb-4 tracking-tight">Pengaturan</h1>
+            <p className="text-notion-gray text-lg max-w-2xl leading-relaxed">Kelola preferensi akun, notifikasi, dan tampilan aplikasi Anda.</p>
+          </div>
+          <Button 
+            onClick={handleSave} 
+            disabled={isSaving} 
+            className="bg-notion-blue hover:bg-notion-blue/90 text-white shadow-none rounded-sm px-6 font-medium h-9"
+          >
+            {isSaving ? 'Menyimpan...' : (saveStatus === 'success' ? 'Tersimpan!' : 'Update Preferensi')}
+            {saveStatus === 'success' && <CheckCircle2 className="w-4 h-4 ml-2" />}
+            {!isSaving && saveStatus === 'idle' && <Save className="w-4 h-4 ml-2" />}
+          </Button>
         </div>
-        <Button 
-          onClick={handleSave} 
-          disabled={isSaving} 
-          className="bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 rounded-xl px-8 font-bold"
-        >
-          {isSaving ? 'Menyimpan...' : (saveStatus === 'success' ? 'Tersimpan!' : 'Simpan Perubahan')}
-          {saveStatus === 'success' && <CheckCircle2 className="w-4 h-4 ml-2" />}
-          {!isSaving && saveStatus === 'idle' && <Save className="w-4 h-4 ml-2" />}
-        </Button>
       </div>
 
-      <div className="grid gap-6">
+      <div className="grid gap-8">
         {/* Notifications */}
         <SettingsSection 
-          icon={<Bell className="w-5 h-5 text-amber-500" />} 
+          icon={<Bell className="w-5 h-5 text-notion-text opacity-70" />} 
           title="Notifikasi" 
-          description="Pilih bagaimana Anda ingin menerima pembaruan dari kami."
+          description="Pilih bagaimana Anda ingin menerima pemberitahuan sistem."
         >
-          <div className="space-y-4 pt-2">
+          <div className="space-y-1">
             <ToggleOption 
-              label="Notifikasi Email" 
-              description="Terima ringkasan dwi-mingguan dan berita penting."
+              label="Email Notifikasi" 
+              description="Terima informasi penagihan dan pengingat via email."
               checked={settings.notif_email}
               onCheckedChange={(val) => setSettings(s => ({ ...s, notif_email: val }))}
             />
             <ToggleOption 
-              label="Notifikasi Push" 
-              description="Dapatkan peringatan langsung di perangkat Anda."
+              label="Push Notifikasi" 
+              description="Dapatkan peringatan penting langsung di aplikasi."
               checked={settings.notif_push}
               onCheckedChange={(val) => setSettings(s => ({ ...s, notif_push: val }))}
             />
@@ -104,57 +105,58 @@ export default function SettingsPage() {
 
         {/* Preferences */}
         <SettingsSection 
-          icon={<Globe className="w-5 h-5 text-indigo-500" />} 
-          title="Tampilan & Bahasa" 
-          description="Atur bahasa dan tema aplikasi."
+          icon={<Globe className="w-5 h-5 text-notion-text opacity-70" />} 
+          title="Regional & Tampilan" 
+          description="Sesuaikan antarmuka sesuai preferensi Anda."
         >
-          <div className="space-y-6 pt-2">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 py-2">
+          <div className="space-y-1">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 py-4 border-b border-[#EFEFEF] last:border-0">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-indigo-50 rounded-lg">
-                  <Languages className="w-4 h-4 text-indigo-600" />
+                <div className="text-notion-gray">
+                  <Languages className="w-4 h-4" />
                 </div>
                 <div>
-                  <p className="font-bold text-slate-900">Bahasa</p>
-                  <p className="text-xs text-slate-500">Pilih bahasa antarmuka aplikasi.</p>
+                  <p className="font-semibold text-notion-text text-[15px]">Bahasa Utama</p>
+                  <p className="text-sm text-notion-gray mt-0.5">Pilih bahasa favorit Anda.</p>
                 </div>
               </div>
-              <div className="flex gap-2 p-1 bg-slate-100 rounded-xl">
+              <div className="flex gap-1 p-1 bg-stone-50 border border-[#EFEFEF] rounded-md">
                  <button 
                   onClick={() => setSettings(s => ({ ...s, bahasa: 'id' }))}
-                  className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${settings.bahasa === 'id' ? 'bg-white shadow text-primary' : 'text-slate-400 hover:text-slate-600'}`}
+                  className={`px-3 py-1 text-xs font-semibold rounded-sm transition-colors ${settings.bahasa === 'id' ? 'bg-white shadow-sm border border-[#EFEFEF] text-notion-text' : 'text-notion-gray hover:text-notion-text hover:bg-stone-100'}`}
                  >
                    Indonesia
                  </button>
                  <button 
                   onClick={() => setSettings(s => ({ ...s, bahasa: 'en' }))}
-                  className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${settings.bahasa === 'en' ? 'bg-white shadow text-primary' : 'text-slate-400 hover:text-slate-600'}`}
+                  className={`px-3 py-1 text-xs font-semibold rounded-sm transition-colors ${settings.bahasa === 'en' ? 'bg-white shadow-sm border border-[#EFEFEF] text-notion-text' : 'text-notion-gray hover:text-notion-text hover:bg-stone-100'}`}
                  >
                    English
                  </button>
               </div>
             </div>
 
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 py-2">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 py-4 border-b border-[#EFEFEF] last:border-0">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-slate-50 rounded-lg text-slate-400">
+                <div className="text-notion-gray">
                   <Monitor className="w-4 h-4" />
                 </div>
                 <div>
-                  <p className="font-bold text-slate-900">Tema</p>
-                  <p className="text-xs text-slate-500">Sesuaikan tampilan dengan kenyamanan mata Anda.</p>
+                  <p className="font-semibold text-notion-text text-[15px]">Tema Tampilan</p>
+                  <p className="text-sm text-notion-gray mt-0.5">Tema 'dark mode' akan tersedia segera.</p>
                 </div>
               </div>
-              <div className="flex gap-2 p-1 bg-slate-100 rounded-xl">
+              <div className="flex gap-1 p-1 bg-stone-50 border border-[#EFEFEF] rounded-md">
                  <button 
                   onClick={() => setSettings(s => ({ ...s, tema: 'light' }))}
-                  className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${settings.tema === 'light' ? 'bg-white shadow text-primary' : 'text-slate-400 hover:text-slate-600'}`}
+                  className={`px-3 py-1 text-xs font-semibold rounded-sm transition-colors ${settings.tema === 'light' ? 'bg-white shadow-sm border border-[#EFEFEF] text-notion-text' : 'text-notion-gray hover:text-notion-text hover:bg-stone-100'}`}
                  >
                    Light
                  </button>
                  <button 
+                  disabled
                   onClick={() => setSettings(s => ({ ...s, tema: 'dark' }))}
-                  className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all ${settings.tema === 'dark' ? 'bg-white shadow text-primary' : 'text-slate-400 hover:text-slate-600'}`}
+                  className={`px-3 py-1 text-xs font-semibold rounded-sm transition-colors opacity-50 cursor-not-allowed ${settings.tema === 'dark' ? 'bg-white shadow-sm border border-[#EFEFEF] text-notion-text' : 'text-notion-gray'}`}
                  >
                    Dark
                  </button>
@@ -164,17 +166,17 @@ export default function SettingsPage() {
         </SettingsSection>
 
         {/* Security Info */}
-        <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 flex items-start gap-4">
-          <div className="p-3 bg-white rounded-2xl shadow-sm text-slate-400">
-            <Shield className="w-6 h-6" />
-          </div>
-          <div>
-            <h4 className="font-bold text-slate-900">Keamanan Akun</h4>
-            <p className="text-sm text-slate-500 leading-relaxed max-w-lg mt-1">
-              Kata sandi Anda dikelola oleh Supabase Auth. Untuk mengganti kata sandi, silakan klik tombol "Lupa Kata Sandi" di halaman login atau hubungi administrator jika Anda menggunakan akun yang dikelola sistem.
+        <SettingsSection 
+          icon={<Shield className="w-5 h-5 text-notion-text opacity-70" />} 
+          title="Keamanan Akun" 
+          description="Informasi mengenai sandi dan login sesi."
+        >
+          <div className="py-2">
+            <p className="text-sm text-notion-gray leading-relaxed max-w-2xl">
+              Autentikasi dikendalikan oleh manajemen ID pusat (Supabase Auth). Untuk memperbarui kata sandi atau faktor ganda Anda, pastikan untuk menggunakan fitur Lupa Kata Sandi pada halaman awal atau kontak Administrator Nasional.
             </p>
           </div>
-        </div>
+        </SettingsSection>
       </div>
     </div>
   )
@@ -182,29 +184,29 @@ export default function SettingsPage() {
 
 function SettingsSection({ icon, title, description, children }: { icon: React.ReactNode, title: string, description: string, children: React.ReactNode }) {
   return (
-    <Card className="border-none shadow-xl shadow-slate-100 bg-white rounded-3xl overflow-hidden">
-      <CardContent className="p-8">
-        <div className="flex items-start gap-4 mb-6">
-          <div className="p-3 bg-slate-50 rounded-2xl">
+    <div className="border border-[#EFEFEF] bg-white rounded-md overflow-hidden">
+        <div className="flex items-center gap-3 mb-4 p-5 border-b border-[#EFEFEF] bg-stone-50/50">
+          <div>
             {icon}
           </div>
           <div>
-            <h3 className="text-xl font-bold text-slate-900">{title}</h3>
-            <p className="text-sm text-slate-500 mt-0.5">{description}</p>
+            <h3 className="text-[15px] font-semibold text-notion-text">{title}</h3>
+            <p className="text-xs text-notion-gray mt-0.5">{description}</p>
           </div>
         </div>
-        {children}
-      </CardContent>
-    </Card>
+        <div className="px-6 pb-6">
+          {children}
+        </div>
+    </div>
   )
 }
 
 function ToggleOption({ label, description, checked, onCheckedChange }: { label: string, description: string, checked: boolean, onCheckedChange: (v: boolean) => void }) {
   return (
-    <div className="flex items-center justify-between py-2 border-b border-slate-50 last:border-0 pb-4">
+    <div className="flex items-center justify-between py-4 border-b border-[#EFEFEF] last:border-0 hover:bg-stone-50/30 -mx-6 px-6 transition-colors">
       <div className="space-y-0.5">
-        <p className="font-bold text-slate-900">{label}</p>
-        <p className="text-xs text-slate-500 max-w-[280px]">{description}</p>
+        <p className="font-medium text-[15px] text-notion-text">{label}</p>
+        <p className="text-sm text-notion-gray max-w-[280px]">{description}</p>
       </div>
       <Switch checked={checked} onCheckedChange={onCheckedChange} />
     </div>
