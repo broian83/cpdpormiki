@@ -1,13 +1,3 @@
 [build]
-  publish = "out"
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
-[context.production.environment]
-  NEXT_PUBLIC_SUPABASE_URL = "https://your-project-id.supabase.co"
-  NEXT_PUBLIC_SUPABASE_ANON_KEY = "your-anon-key"
-  NEXT_PUBLIC_APP_URL = "https://cpdpormiki.netlify.app"
-  NEXT_PUBLIC_DEFAULT_KOTA_CETAK = "Jakarta"
+  command = "npm run build"
+  publish = ".next"
