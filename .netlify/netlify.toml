@@ -1,5 +1,8 @@
+redirectsOrigin = "inline"
 headers = []
-redirects = []
+
+[images]
+remote_images = ["^(?:https:\\/\\/(?!\\.)(?=.)[^/]*?\\.supabase\\.co(?:\\/(?!\\.)(?:(?:(?!(?:^|\\/)\\.).)*?)|$))$"]
 
 [functions]
 
@@ -8,22 +11,17 @@ redirects = []
 [[plugins]]
 origin = "default"
 package = "@netlify/plugin-nextjs"
+pinned_version = "5"
 
 [plugins.inputs]
 
 [build]
-publish = "C:\\Users\\DPP%20PORMIKI%201\\cpdpormiki\\out"
+publish = "C:\\Users\\DPP PORMIKI 1\\cpdpormiki\\.next"
 publishOrigin = "config"
 commandOrigin = "config"
-command = "cd C:/Users/DPP%20PORMIKI%201/cpdpormiki && npm run build"
-ignore = "git"
+command = "npm run build"
 
 [build.environment]
-NODE_VERSION = "18"
-NEXT_PUBLIC_SUPABASE_URL = "https://your-project-id.supabase.co"
-NEXT_PUBLIC_SUPABASE_ANON_KEY = "your-anon-key"
-NEXT_PUBLIC_APP_URL = "https://cpdpormiki.netlify.app"
-NEXT_PUBLIC_DEFAULT_KOTA_CETAK = "Jakarta"
 
 [build.processing]
 
@@ -36,3 +34,33 @@ NEXT_PUBLIC_DEFAULT_KOTA_CETAK = "Jakarta"
 [build.processing.js]
 
 [build.services]
+
+[[redirects]]
+from = "/_next/image"
+to = "/.netlify/images?url=:url&w=:width&q=:quality"
+status = 200.0
+force = false
+
+[redirects.query]
+url = ":url"
+w = ":width"
+q = ":quality"
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/_ipx/*"
+to = "/.netlify/images?url=:url&w=:width&q=:quality"
+status = 200.0
+force = false
+
+[redirects.query]
+url = ":url"
+w = ":width"
+q = ":quality"
+
+[redirects.conditions]
+
+[redirects.headers]
