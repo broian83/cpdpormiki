@@ -32,8 +32,33 @@ export default function PaymentPage() {
     setIsLoading(false)
   }
 
-  const handleBayar = async (id: string) => {
-    alert('Sistem Pembayaran Otomatis sedang dalam pemeliharaan. Silakan melakukan transfer manual ke rekening Bendahara DPD PORMIKI.')
+  const handleBayar = async (id: string, nominal: number, description: string) => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) return
+
+      const response = await fetch('/api/mayar/create-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          invoiceId: id,
+          amount: nominal,
+          description: description,
+          customerName: session.user.user_metadata?.full_name || '',
+          customerEmail: session.user.email
+        })
+      })
+
+      const data = await response.json()
+      if (data.paymentUrl) {
+        window.location.href = data.paymentUrl
+      } else {
+        alert('Gagal membuat koneksi pembayaran: ' + (data.error || 'Unknown Error'))
+      }
+    } catch (error) {
+      console.error('Payment Flow Error:', error)
+      alert('Terjadi kesalahan saat memproses pembayaran.')
+    }
   }
 
   const unpaidInvoices = invoices.filter(i => i.status === 'unpaid')
@@ -119,7 +144,11 @@ export default function PaymentPage() {
                       </div>
                       <div className="text-right">
                         <p className="text-[15px] font-semibold text-notion-text">Rp {inv.nominal.toLocaleString('id-ID')}</p>
-                        <Button size="sm" onClick={() => handleBayar(inv.id)} className="mt-2 bg-notion-bg border border-[#EFEFEF] text-notion-text hover:bg-stone-100 rounded-sm h-8 px-4 shadow-none">
+                        <Button 
+                          size="sm" 
+                          onClick={() => handleBayar(inv.id, inv.nominal, inv.jenis_iuran)} 
+                          className="mt-2 bg-notion-bg border border-[#EFEFEF] text-notion-text hover:bg-stone-100 rounded-sm h-8 px-4 shadow-none"
+                        >
                           Bayar
                           <ChevronRight className="w-3 h-3 ml-1" />
                         </Button>
