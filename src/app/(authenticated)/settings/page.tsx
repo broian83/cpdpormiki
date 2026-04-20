@@ -28,7 +28,7 @@ export default function SettingsPage() {
     setIsLoading(true)
     const { data: { session } } = await supabase.auth.getSession()
     if (!session) return
-    const { data } = await supabase.from('account_settings').select('*').eq('user_id', session.user.id).single()
+    const { data } = await supabase.from('account_settings').select('*').eq('user_id', session.user.id).maybeSingle()
     if (data) setSettings(data)
     setIsLoading(false)
   }

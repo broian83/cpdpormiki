@@ -40,7 +40,7 @@ export default function ProfilePage() {
       .from('pmik_profiles')
       .select('*')
       .eq('user_id', session.user.id)
-      .single()
+      .maybeSingle()
 
     if (data) setProfile(data)
     setIsLoading(false)
