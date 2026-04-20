@@ -2,19 +2,39 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Avatar } from '@/components/ui/avatar'
 import { useAuthStore } from '@/store/auth'
+import { createClient } from '@/lib/supabase/client'
 
 export function Header() {
+
   const { user, profile } = useAuthStore()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const pathname = usePathname()
+
+  // Logika penentuan judul header
+  const getPageTitle = () => {
+    if (pathname.startsWith('/dashboard')) return 'Dashboard'
+    if (pathname.startsWith('/private-area')) return 'Private Area'
+    if (pathname.startsWith('/logbook')) return 'Logbook PMIK'
+    if (pathname.startsWith('/profile')) return 'Profil PMIK'
+    if (pathname.startsWith('/mailbox')) return 'Mailbox / Pesan'
+    if (pathname.startsWith('/settings')) return 'Settings'
+    if (pathname.startsWith('/cv')) return 'Curriculum Vitae'
+    if (pathname.startsWith('/payment')) return 'Pembayaran'
+    if (pathname.startsWith('/help')) return 'Bantuan'
+    if (pathname.startsWith('/lms')) return 'LMS'
+    return 'Member Area'
+  }
 
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
+    <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm">
       <div className="flex items-center justify-between h-16 px-4 md:px-6">
         <div className="flex items-center gap-4">
-          <h1 className="text-lg font-semibold text-slate-900">Dashboard</h1>
+          <h1 className="text-lg font-bold text-slate-900">{getPageTitle()}</h1>
         </div>
+
 
         <div className="flex items-center gap-4">
           <button className="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg">
