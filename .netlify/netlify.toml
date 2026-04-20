@@ -1,0 +1,38 @@
+headers = []
+redirects = []
+
+[functions]
+
+[functions."*"]
+
+[[plugins]]
+origin = "default"
+package = "@netlify/plugin-nextjs"
+
+[plugins.inputs]
+
+[build]
+publish = "C:\\Users\\DPP%20PORMIKI%201\\cpdpormiki\\out"
+publishOrigin = "config"
+commandOrigin = "config"
+command = "cd C:/Users/DPP%20PORMIKI%201/cpdpormiki && npm run build"
+ignore = "git"
+
+[build.environment]
+NODE_VERSION = "18"
+NEXT_PUBLIC_SUPABASE_URL = "https://your-project-id.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY = "your-anon-key"
+NEXT_PUBLIC_APP_URL = "https://cpdpormiki.netlify.app"
+NEXT_PUBLIC_DEFAULT_KOTA_CETAK = "Jakarta"
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
