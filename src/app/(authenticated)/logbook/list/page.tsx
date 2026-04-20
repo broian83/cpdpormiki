@@ -8,8 +8,7 @@ import { BULAN_OPTIONS, TAHUN_OPTIONS, PAGE_SIZE } from '@/lib/constants'
 import { formatDate, getBulanLabel } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Select } from '@/components/ui/select'
-import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { ArrowLeft, Save, Plus, FileText, Search, Trash2, CalendarCheck2 } from 'lucide-react'
 
 interface LogbookEntry {
   id: string
@@ -87,147 +86,143 @@ export default function LogbookListPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-top-4 duration-500">
+    <div className="space-y-8 animate-in fade-in pb-16 duration-500">
       {/* Page Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="flex items-center gap-4">
+      <div className="pt-6 border-b border-[#EFEFEF] pb-8 flex flex-col xl:flex-row xl:items-end justify-between gap-6">
+        <div className="flex items-start gap-4">
           <Button 
             variant="ghost" 
-            size="sm" 
+            size="icon" 
             onClick={() => router.push('/logbook')}
-            className="rounded-full w-10 h-10 p-0 text-slate-500 hover:bg-white hover:text-teal-600 shadow-sm transition-all"
+            className="rounded-sm w-9 h-9 mt-1 text-notion-gray hover:bg-stone-100 border border-transparent shadow-none"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
+            <ArrowLeft className="w-5 h-5" />
           </Button>
           <div>
-            <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Riwayat Logbook</h2>
-            <p className="text-slate-500">Manajemen histori pencatatan kegiatan bulanan Anda.</p>
+            <h1 className="text-4xl font-serif font-semibold text-notion-text mb-4 tracking-tight">Riwayat Logbook</h1>
+            <p className="text-notion-gray text-lg max-w-2xl leading-relaxed">Manajemen histori pencatatan kegiatan bulanan Anda.</p>
           </div>
         </div>
         <Link href="/logbook/input">
-          <Button className="bg-teal-600 hover:bg-teal-700 text-white font-bold px-6 h-12 rounded-xl shadow-lg shadow-teal-100">
-            + Tambah Entri Baru
+          <Button className="bg-notion-blue hover:bg-notion-blue/90 text-white rounded-sm font-medium px-5 h-10 shadow-none">
+            <Plus className="w-4 h-4 mr-2" />
+            Entri Baru
           </Button>
         </Link>
       </div>
 
-      {/* Filter Card */}
-      <Card className="border-none shadow-xl shadow-slate-100 bg-white rounded-3xl overflow-hidden">
-        <CardContent className="p-6 md:p-8">
-          <div className="flex items-center gap-2 mb-6 text-slate-400">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-            </svg>
-            <span className="text-xs font-bold uppercase tracking-widest">Saring Pencarian</span>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Filter Options */}
+      <div className="border border-[#EFEFEF] bg-white rounded-md overflow-hidden">
+        <div className="p-4 border-b border-[#EFEFEF] bg-stone-50 flex items-center gap-2">
+           <Search className="w-4 h-4 text-notion-gray opacity-70" />
+           <span className="text-[13px] font-semibold uppercase tracking-widest text-notion-gray">Saring Laporan</span>
+        </div>
+        <div className="p-5 flex flex-col md:flex-row gap-4">
+          <div className="flex-1">
             <Select
               label="Tahun Laporan"
               options={TAHUN_OPTIONS}
               value={filterTahun}
               onChange={(e) => { setFilterTahun(Number(e.target.value)); setPage(1); }}
+              className="h-9 rounded-sm border-[#EFEFEF] shadow-none"
             />
+          </div>
+          <div className="flex-1">
             <Select
-              label="Pilih Bulan"
+              label="Bulan"
               options={[{ value: 0, label: 'Semua Bulan' }, ...BULAN_OPTIONS]}
               value={filterBulan}
               onChange={(e) => { setFilterBulan(Number(e.target.value)); setPage(1); }}
+              className="h-9 rounded-sm border-[#EFEFEF] shadow-none"
             />
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Table / List Rendering */}
       <div className="space-y-4">
         {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-24 space-y-4 bg-white/50 rounded-3xl border border-dashed border-slate-200">
-            <div className="w-10 h-10 border-4 border-teal-100 border-t-teal-600 rounded-full animate-spin"></div>
-            <p className="text-slate-400 font-medium">Mencari arsip logbook Anda...</p>
+          <div className="flex flex-col items-center justify-center p-24 bg-stone-50 rounded-md border border-[#EFEFEF] border-dashed">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-notion-gray mb-4"></div>
+            <p className="text-sm text-notion-gray">Memuat histori logbook...</p>
           </div>
         ) : entries.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-24 bg-white rounded-3xl border border-slate-100 text-center px-6">
-            <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-6 text-slate-300">
-              <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-              </svg>
+          <div className="flex flex-col items-center justify-center py-20 bg-stone-50 rounded-md border border-[#EFEFEF] border-dashed text-center px-6">
+            <div className="mb-4 text-notion-gray opacity-30">
+              <CalendarCheck2 className="w-10 h-10" />
             </div>
-            <h3 className="text-xl font-bold text-slate-900">Arsip Masih Kosong</h3>
-            <p className="text-slate-500 mt-2 max-w-sm mx-auto">
-              Belum ditemukan catatan logbook untuk periode yang Anda pilih.
+            <h3 className="text-[15px] font-semibold text-notion-text mb-2">Arsip Masih Kosong</h3>
+            <p className="text-sm text-notion-gray max-w-sm mx-auto leading-relaxed">
+              Belum ditemukan catatan logbook untuk filter waktu yang Anda pilih.
             </p>
           </div>
         ) : (
           <div className="grid gap-6">
             {entries.map((entry) => (
-              <Card key={entry.id} className="border-none shadow-lg shadow-slate-100 bg-white rounded-3xl overflow-hidden group hover:shadow-xl transition-all">
-                <CardContent className="p-0">
-                  <div className="p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-50 group-hover:bg-slate-50/30 transition-colors">
-                    <div className="flex items-center gap-6">
-                      <div className="w-16 h-16 rounded-2xl bg-teal-50 text-teal-600 flex flex-col items-center justify-center">
-                        <span className="text-[10px] font-bold uppercase">{entry.tahun}</span>
-                        <span className="text-lg font-bold leading-tight">{getBulanLabel(entry.bulan).substring(0, 3)}</span>
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-slate-900">
-                          Laporan {getBulanLabel(entry.bulan)}
-                        </h3>
-                        <p className="text-sm text-slate-400 mt-0.5">
-                          Dibuat pada {formatDate(entry.created_at)}
-                        </p>
-                      </div>
+              <div key={entry.id} className="border border-[#EFEFEF] bg-white rounded-md overflow-hidden group hover:shadow-sm transition-all">
+                <div className="p-5 border-b border-[#EFEFEF] bg-stone-50/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-white border border-[#EFEFEF] rounded flex flex-col justify-center items-center shadow-sm text-notion-text">
+                      <span className="text-[10px] font-semibold tracking-wider">{entry.tahun}</span>
+                      <span className="text-sm font-bold">{getBulanLabel(entry.bulan).substring(0, 3)}</span>
                     </div>
-                    <div className="flex items-center gap-4">
-                      <Badge className={entry.status_draft ? 'bg-amber-100 text-amber-700 border-none px-4 py-1.5' : 'bg-emerald-100 text-emerald-700 border-none px-4 py-1.5'}>
-                        {entry.status_draft ? 'Draft' : 'Permanen'}
-                      </Badge>
-                      <div className="flex gap-2">
-                        <Button variant="ghost" size="sm" className="w-10 h-10 p-0 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl" onClick={() => handleDelete(entry.id)}>
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
-                        </Button>
-                      </div>
+                    <div>
+                      <h3 className="text-[15px] font-semibold text-notion-text leading-tight">
+                        Logbook Bulanan
+                      </h3>
+                      <p className="text-[11px] text-notion-gray uppercase font-semibold tracking-wider mt-1">
+                        Dibuat {formatDate(entry.created_at)}
+                      </p>
                     </div>
                   </div>
-                  <div className="p-6 md:p-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {entry.monthly_logbook_details?.map((detail, idx) => (
-                        <div key={idx} className="flex flex-col p-4 bg-slate-50/50 rounded-2xl border border-slate-100 group-hover:bg-white group-hover:border-slate-200 transition-all">
-                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">{detail.activity_categories?.kode_kegitan}</span>
-                          <span className="font-semibold text-slate-800 line-clamp-1">{detail.activity_categories?.nama_kegitan}</span>
-                          <span className="text-2xl font-bold text-teal-600 mt-2">{detail.jumlah_kegitan} <span className="text-xs font-medium text-slate-400">kali</span></span>
+                  <div className="flex items-center gap-3">
+                    <span className={`px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider rounded-sm ${entry.status_draft ? 'bg-stone-100 text-notion-gray' : 'bg-notion-green_bg text-notion-green'}`}>
+                      {entry.status_draft ? 'Draft' : 'Final'}
+                    </span>
+                    <button onClick={() => handleDelete(entry.id)} className="p-1.5 text-notion-gray hover:text-notion-red hover:bg-notion-red/10 rounded transition-colors" title="Hapus Permanen">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+                    {entry.monthly_logbook_details?.map((detail, idx) => (
+                      <div key={idx} className="flex flex-col p-4 bg-stone-50 border border-[#EFEFEF] rounded-sm group-hover:bg-white transition-colors">
+                        <span className="text-[10px] font-semibold text-notion-gray uppercase tracking-widest mb-1.5">{detail.activity_categories?.kode_kegitan}</span>
+                        <span className="text-[15px] font-medium text-notion-text line-clamp-2 leading-tight mb-3 flex-1">{detail.activity_categories?.nama_kegitan}</span>
+                        <div className="flex items-center gap-1 border-t border-[#EFEFEF] pt-3 mt-auto">
+                          <span className="text-lg font-semibold text-notion-blue leading-none">{detail.jumlah_kegitan}</span>
+                          <span className="text-xs text-notion-gray font-medium">kali</span>
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    ))}
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             ))}
           </div>
         )}
       </div>
 
-      {/* Pagination Container */}
+      {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-center gap-4 py-8">
+        <div className="flex items-center justify-center gap-2 pt-8">
           <Button 
             variant="outline" 
             disabled={page === 1} 
             onClick={() => { setPage(p => p - 1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-            className="rounded-xl"
+            className="h-8 px-3 rounded-sm border-[#EFEFEF] text-xs font-medium text-notion-text shadow-none hover:bg-stone-50"
           >
             ← Prev
           </Button>
-          <div className="bg-white px-6 py-2 rounded-xl shadow-sm border border-slate-100 font-bold text-sm text-slate-700">
+          <div className="px-3 py-1.5 bg-stone-50 rounded-sm border border-[#EFEFEF] text-xs font-semibold text-notion-gray">
             Halaman {page} dari {totalPages}
           </div>
           <Button 
             variant="outline" 
             disabled={page === totalPages} 
             onClick={() => { setPage(p => p + 1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-            className="rounded-xl"
+            className="h-8 px-3 rounded-sm border-[#EFEFEF] text-xs font-medium text-notion-text shadow-none hover:bg-stone-50"
           >
             Next →
           </Button>

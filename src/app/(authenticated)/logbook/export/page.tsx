@@ -2,13 +2,12 @@
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
-import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { BULAN_OPTIONS, TAHUN_OPTIONS } from '@/lib/constants'
 import { Select } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { DEFAULT_KOTA_CETAK } from '@/lib/constants'
+import { Download, Filter, FileText } from 'lucide-react'
 
 interface ActivityCategory {
   id: string
@@ -121,7 +120,7 @@ export default function ExportPage() {
         body: tableData,
         startY: 50,
         styles: { fontSize: 8, halign: 'center' },
-        headStyles: { fillColor: [77, 145, 153] },
+        headStyles: { fillColor: [40, 40, 40] },
         columnStyles: { 0: { halign: 'left' } }
       })
 
@@ -134,50 +133,104 @@ export default function ExportPage() {
   }
 
   return (
-    <div className="space-y-6 pb-20 md:pb-0">
-      <div>
-        <h2 className="text-2xl font-bold text-slate-900">Cetak / Export Laporan</h2>
-        <p className="text-slate-600">Export laporan logbook ke PDF</p>
+    <div className="space-y-10 pb-16 animate-in fade-in duration-500">
+      {/* Header section  */}
+      <div className="pt-6 border-b border-[#EFEFEF] pb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+          <h1 className="text-4xl font-serif font-semibold text-notion-text mb-4 tracking-tight">Cetak Logbook</h1>
+          <p className="text-notion-gray text-lg max-w-2xl leading-relaxed">Ekspor laporan rekapitulasi Anda ke dalam format PDF yang siap cetak.</p>
+        </div>
       </div>
 
-      <Card>
-        <CardHeader><CardTitle>Filter Periode</CardTitle></CardHeader>
-        <CardContent>
+      <div className="border border-[#EFEFEF] bg-white rounded-md overflow-hidden">
+        <div className="border-b border-[#EFEFEF] bg-stone-50 p-4 flex gap-2 items-center">
+            <Filter className="w-4 h-4 opacity-70 text-notion-text" />
+            <span className="font-semibold text-notion-text text-[13px] uppercase tracking-wider">Konfigurasi Laporan</span>
+        </div>
+        <div className="p-5">
           <div className="grid md:grid-cols-3 gap-4">
-            <Select label="Tahun" options={TAHUN_OPTIONS} value={tahun} onChange={(e) => setTahun(Number(e.target.value))} />
-            <Select label="Periode" options={[{ value: 0, label: '12 Bulan (Setahun)' }, { value: 1, label: 'Semester 1' }, { value: 2, label: 'Semester 2' }]} value={semester} onChange={(e) => setSemester(Number(e.target.value))} />
-            <Button onClick={handleExport} className="w-full" isLoading={isExporting}>Export PDF</Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader><CardTitle>Preview</CardTitle></CardHeader>
-        <CardContent>
-          {isLoading ? <div className="p-8 text-center text-slate-500">Memuat...</div> : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="bg-teal-600 text-white">
-                  <tr>
-                    <th className="px-4 py-3 text-left">Jenis Kegiatan</th>
-                    {bulanRange.map(bulan => <th key={bulan} className="px-4 py-3 text-center">{BULAN_OPTIONS.find(bb => bb.value === bulan)?.label?.slice(0, 3)}</th>)}
-                    <th className="px-4 py-3 text-center">Total</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-200">
-                  {activities.map(activity => (
-                    <tr key={activity.id}>
-                      <td className="px-4 py-3 text-slate-900">{activity.nama_kegitan}</td>
-                      {bulanRange.map(bulan => <td key={bulan} className="px-4 py-3 text-center text-slate-600">{getValue(activity.id, bulan)}</td>)}
-                      <td className="px-4 py-3 text-center font-medium text-slate-900">{getTotal(activity.id)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <Select 
+              label="Pilih Tahun" 
+              options={TAHUN_OPTIONS} 
+              value={tahun} 
+              className="h-9 rounded-sm border-[#EFEFEF]"
+              onChange={(e) => setTahun(Number(e.target.value))} 
+            />
+            <Select 
+              label="Pilih Periode" 
+              options={[{ value: 0, label: '12 Bulan (Setahun Penuh)' }, { value: 1, label: 'Semester 1 (Jan-Jun)' }, { value: 2, label: 'Semester 2 (Jul-Des)' }]} 
+              value={semester} 
+              className="h-9 rounded-sm border-[#EFEFEF]"
+              onChange={(e) => setSemester(Number(e.target.value))} 
+            />
+            <div className="flex items-end">
+              <Button 
+                onClick={handleExport} 
+                className="w-full bg-notion-blue hover:bg-notion-blue/90 text-white rounded-sm font-medium h-9 shadow-none" 
+                isLoading={isExporting}
+              >
+                <Download className="w-4 h-4 mr-2" />
+                Unduh PDF
+              </Button>
             </div>
-          )}
-        </CardContent>
-      </Card>
+          </div>
+        </div>
+      </div>
+
+      <div className="border border-[#EFEFEF] bg-white rounded-md overflow-hidden shadow-sm">
+         <div className="border-b border-[#EFEFEF] bg-stone-50 p-4 flex gap-2 items-center">
+             <FileText className="w-4 h-4 opacity-70 text-notion-text" />
+             <span className="font-semibold text-notion-text text-[13px] uppercase tracking-wider">Pratinjau Data Laporan</span>
+         </div>
+         <div className="p-0">
+           {isLoading ? (
+             <div className="p-16 flex flex-col items-center gap-4">
+               <div className="animate-spin h-6 w-6 border-b-2 border-notion-gray rounded-full"></div>
+               <span className="text-sm text-notion-gray">Mempersiapkan pratinjau...</span>
+             </div>
+           ) : (
+             <div className="overflow-x-auto">
+               <table className="w-full text-[13px]">
+                 <thead className="bg-stone-50 border-b border-[#EFEFEF]">
+                   <tr>
+                     <th className="px-5 py-4 text-left font-semibold text-notion-text uppercase tracking-wider min-w-[250px] sticky left-0 bg-stone-50 z-10 shadow-[1px_0_0_#EFEFEF]">Jenis Kegiatan</th>
+                     {bulanRange.map(bulan => (
+                        <th key={bulan} className="px-4 py-4 text-center font-semibold text-notion-gray uppercase tracking-wider">
+                          {BULAN_OPTIONS.find(bb => bb.value === bulan)?.label?.slice(0, 3)}
+                        </th>
+                     ))}
+                     <th className="px-5 py-4 text-center font-bold text-notion-blue uppercase tracking-wider bg-notion-blue_bg/50">Total</th>
+                   </tr>
+                 </thead>
+                 <tbody className="divide-y divide-[#EFEFEF]">
+                   {activities.map(activity => (
+                     <tr key={activity.id} className="hover:bg-stone-50/50 transition-colors group">
+                       <td className="px-5 py-4 font-medium text-notion-text sticky left-0 bg-white group-hover:bg-stone-50/50 transition-colors z-10 shadow-[1px_0_0_#EFEFEF]">{activity.nama_kegitan}</td>
+                       {bulanRange.map(bulan => (
+                         <td key={bulan} className={`px-4 py-4 text-center ${getValue(activity.id, bulan) > 0 ? 'text-notion-text font-medium' : 'text-notion-gray opacity-30'} text-[14px]`}>
+                           {getValue(activity.id, bulan)}
+                         </td>
+                       ))}
+                       <td className="px-5 py-4 text-center font-bold text-notion-blue bg-notion-blue_bg/10 text-[14px]">{getTotal(activity.id)}</td>
+                     </tr>
+                   ))}
+                   <tr className="bg-stone-50 border-t-2 border-[#EFEFEF]">
+                      <td className="px-5 py-4 font-bold text-notion-text uppercase tracking-widest text-xs sticky left-0 bg-stone-50 z-10 shadow-[1px_0_0_#EFEFEF]">Grand Total</td>
+                      {bulanRange.map(bulan => (
+                        <td key={bulan} className="px-4 py-4 text-center font-bold text-notion-text text-[14px]">
+                           {activities.reduce((sum, a) => sum + getValue(a.id, bulan), 0)}
+                        </td>
+                      ))}
+                      <td className="px-5 py-4 text-center font-black text-notion-blue bg-notion-blue_bg/30 text-[15px]">
+                         {activities.reduce((sum, a) => sum + getTotal(a.id), 0)}
+                      </td>
+                   </tr>
+                 </tbody>
+               </table>
+             </div>
+           )}
+         </div>
+      </div>
     </div>
   )
 }
