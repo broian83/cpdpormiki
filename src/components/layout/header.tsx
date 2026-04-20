@@ -90,5 +90,3 @@ export function Header() {
     </header>
   )
 }
-
-import { createClient } from '@/lib/supabase/client'
