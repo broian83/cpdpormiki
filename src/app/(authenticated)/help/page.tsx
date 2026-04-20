@@ -125,9 +125,9 @@ export default function HelpPage() {
 
   const getStatusBadge = (status: string) => {
     const styles: Record<string, string> = {
-      'open': 'bg-blue-100 text-blue-700',
+      'open': 'bg-indigo-100 text-indigo-700',
       'in_progress': 'bg-amber-100 text-amber-700',
-      'resolved': 'bg-emerald-100 text-emerald-700',
+      'resolved': 'bg-teal-100 text-teal-700',
       'closed': 'bg-slate-100 text-slate-700'
     }
     return (
@@ -139,7 +139,7 @@ export default function HelpPage() {
 
   if (isLoading) return (
     <div className="flex h-64 items-center justify-center">
-      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-600"></div>
     </div>
   )
 
@@ -155,7 +155,7 @@ export default function HelpPage() {
         <div className="flex gap-1 p-1 bg-slate-100 rounded-2xl w-fit shadow-inner">
            <button 
             onClick={() => setActiveTab('articles')}
-            className={`px-6 py-2.5 text-sm font-bold rounded-xl transition-all ${activeTab === 'articles' ? 'bg-white shadow-md text-primary' : 'text-slate-400 hover:text-slate-600'}`}
+            className={`px-6 py-2.5 text-sm font-bold rounded-xl transition-all ${activeTab === 'articles' ? 'bg-white shadow-md text-teal-600' : 'text-slate-400 hover:text-slate-600'}`}
            >
              <div className="flex items-center gap-2">
                <BookOpen className="w-4 h-4" />
@@ -164,7 +164,7 @@ export default function HelpPage() {
            </button>
            <button 
             onClick={() => setActiveTab('tickets')}
-            className={`px-6 py-2.5 text-sm font-bold rounded-xl transition-all ${activeTab === 'tickets' ? 'bg-white shadow-md text-primary' : 'text-slate-400 hover:text-slate-600'}`}
+            className={`px-6 py-2.5 text-sm font-bold rounded-xl transition-all ${activeTab === 'tickets' ? 'bg-white shadow-md text-teal-600' : 'text-slate-400 hover:text-slate-600'}`}
            >
              <div className="flex items-center gap-2">
                <MessageSquare className="w-4 h-4" />
@@ -202,12 +202,12 @@ export default function HelpPage() {
                         className={`w-full text-left p-6 transition-all group flex items-center justify-between ${selectedArticle?.id === article.id ? 'bg-teal-50/50' : 'hover:bg-slate-50/50'}`}
                       >
                         <div className="flex-1 min-w-0">
-                          <p className={`font-bold truncate ${selectedArticle?.id === article.id ? 'text-primary' : 'text-slate-700'}`}>
+                          <p className={`font-bold truncate ${selectedArticle?.id === article.id ? 'text-teal-600' : 'text-slate-700'}`}>
                             {article.judul}
                           </p>
                           <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1.5">{article.kategori || 'Umum'}</p>
                         </div>
-                        <ChevronRight className={`w-4 h-4 transition-transform group-hover:translate-x-1 ${selectedArticle?.id === article.id ? 'text-primary' : 'text-slate-300'}`} />
+                        <ChevronRight className={`w-4 h-4 transition-transform group-hover:translate-x-1 ${selectedArticle?.id === article.id ? 'text-teal-600' : 'text-slate-300'}`} />
                       </button>
                     ))}
                     {filteredArticles.length === 0 && (
@@ -262,7 +262,7 @@ export default function HelpPage() {
         <div className="space-y-6 animate-in fade-in duration-500">
            <div className="flex flex-col md:flex-row justify-between items-center bg-white p-8 rounded-[2rem] shadow-xl shadow-slate-100 gap-6">
              <div className="flex items-center gap-6">
-                <div className="w-16 h-16 rounded-[1.5rem] bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                <div className="w-16 h-16 rounded-[1.5rem] bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
                   <HelpCircle className="w-8 h-8" />
                 </div>
                 <div>
@@ -272,7 +272,7 @@ export default function HelpPage() {
              </div>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
-                <Button className="bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 rounded-2xl h-14 px-10 font-black text-lg">
+                <Button className="bg-teal-600 hover:bg-teal-700 shadow-lg shadow-teal-100 rounded-2xl h-14 px-10 font-black text-lg text-white">
                   <PlusCircle className="mr-3 h-6 w-6" />
                   Buat Tiket Baru
                 </Button>
@@ -364,7 +364,7 @@ export default function HelpPage() {
                         tickets.map(ticket => (
                           <tr key={ticket.id} className="hover:bg-slate-50/50 transition-all cursor-pointer group">
                             <td className="px-10 py-8">
-                              <p className="font-extrabold text-slate-900 group-hover:text-primary transition-colors text-lg">{ticket.subject}</p>
+                              <p className="font-extrabold text-slate-900 group-hover:text-teal-600 transition-colors text-lg">{ticket.subject}</p>
                               <div className="flex items-center gap-2 mt-2">
                                 <span className="text-[10px] font-bold bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md">#{ticket.ticket_number}</span>
                                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(ticket.created_at))}</span>

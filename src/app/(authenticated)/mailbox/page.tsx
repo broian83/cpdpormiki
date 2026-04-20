@@ -55,7 +55,7 @@ export default function MailboxPage() {
           <h2 className="text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
             Mailbox
             {unreadCount > 0 && (
-              <span className="inline-flex items-center justify-center bg-red-500 text-white text-xs font-bold px-2.5 py-0.5 rounded-full ring-4 ring-red-50">
+              <span className="inline-flex items-center justify-center bg-indigo-600 text-white text-xs font-bold px-2.5 py-0.5 rounded-full ring-4 ring-indigo-50">
                 {unreadCount} Baru
               </span>
             )}
@@ -63,7 +63,7 @@ export default function MailboxPage() {
           <p className="text-slate-500 mt-1">Pesan resmi dan notifikasi sistem dari DPP PORMIKI.</p>
         </div>
         <Link href="/mailbox/compose">
-          <Button className="bg-primary hover:bg-primary/90 shadow-md">
+          <Button className="bg-teal-600 hover:bg-teal-700 shadow-md rounded-xl h-11 px-6 font-bold text-white">
             <Send className="w-4 h-4 mr-2" />
             Tulis Pesan Baru
           </Button>
@@ -117,10 +117,10 @@ export default function MailboxPage() {
                   {filteredMessages.map(msg => (
                     <div 
                       key={msg.id} 
-                      className={`p-5 hover:bg-slate-50/80 transition-all cursor-pointer relative group ${!msg.is_read ? 'bg-blue-50/30' : ''}`}
+                      className={`p-5 hover:bg-slate-50/80 transition-all cursor-pointer relative group ${!msg.is_read ? 'bg-indigo-50/30' : ''}`}
                     >
                       <div className="flex items-start gap-4">
-                        <div className={`mt-1 h-2 w-2 rounded-full flex-shrink-0 ${!msg.is_read ? 'bg-primary animate-pulse' : 'bg-transparent'}`} />
+                        <div className={`mt-1 h-2 w-2 rounded-full flex-shrink-0 ${!msg.is_read ? 'bg-teal-600 animate-pulse' : 'bg-transparent'}`} />
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between mb-1">
                             <h3 className={`text-sm tracking-tight truncate ${!msg.is_read ? 'font-black text-slate-900' : 'font-medium text-slate-600'}`}>
@@ -135,7 +135,7 @@ export default function MailboxPage() {
                           </p>
                         </div>
                         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity ml-4">
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-slate-400 hover:text-red-600" onClick={(e) => { e.stopPropagation(); handleDelete(msg.id); }}>
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-slate-400 hover:text-rose-600" onClick={(e) => { e.stopPropagation(); handleDelete(msg.id); }}>
                             <Trash2 className="w-4 h-4" />
                           </Button>
                         </div>

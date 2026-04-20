@@ -75,51 +75,61 @@ export function RegisterForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       {error && (
-        <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
+        <div className="p-4 rounded-2xl bg-rose-50 border border-rose-100 text-rose-600 text-sm font-medium animate-in fade-in duration-300">
           {error}
         </div>
       )}
 
-      <Input
-        label="Nama Lengkap PMIK"
-        placeholder="Masukkan nama sesuai ijazah/STR"
-        error={errors.nama_pmik?.message}
-        {...register('nama_pmik')}
-      />
+      <div className="space-y-4">
+        <Input
+          label="Nama Lengkap PMIK"
+          placeholder="Sesuai ijazah/STR"
+          error={errors.nama_pmik?.message}
+          {...register('nama_pmik')}
+          className="rounded-2xl border-slate-200 focus:border-teal-500 h-12"
+        />
 
-      <Input
-        label="Email"
-        type="email"
-        placeholder="email@contoh.com"
-        error={errors.email?.message}
-        {...register('email')}
-      />
+        <Input
+          label="Email"
+          type="email"
+          placeholder="email@contoh.com"
+          error={errors.email?.message}
+          {...register('email')}
+          className="rounded-2xl border-slate-200 focus:border-teal-500 h-12"
+        />
 
-      <Input
-        label="Password"
-        type="password"
-        placeholder="Minimal 6 karakter"
-        error={errors.password?.message}
-        {...register('password')}
-      />
+        <Input
+          label="Password"
+          type="password"
+          placeholder="Minimal 6 karakter"
+          error={errors.password?.message}
+          {...register('password')}
+          className="rounded-2xl border-slate-200 focus:border-teal-500 h-12"
+        />
 
-      <Input
-        label="Konfirmasi Password"
-        type="password"
-        placeholder="Ulangi password"
-        error={errors.confirmPassword?.message}
-        {...register('confirmPassword')}
-      />
+        <Input
+          label="Konfirmasi Password"
+          type="password"
+          placeholder="Ulangi password"
+          error={errors.confirmPassword?.message}
+          {...register('confirmPassword')}
+          className="rounded-2xl border-slate-200 focus:border-teal-500 h-12"
+        />
+      </div>
 
-      <Button type="submit" className="w-full" isLoading={isLoading}>
-        Daftar Sekarang
+      <Button 
+        type="submit" 
+        className="w-full bg-teal-600 hover:bg-teal-700 text-white font-black h-12 rounded-2xl shadow-lg shadow-teal-100 transition-all active:scale-95" 
+        isLoading={isLoading}
+      >
+        Bergabung Sekarang
       </Button>
 
-      <p className="text-center text-sm text-slate-600">
+      <p className="text-center text-sm text-slate-500 pt-2">
         Sudah punya akun?{' '}
-        <Link href="/login" className="text-teal-600 hover:text-teal-700 font-medium">
+        <Link href="/login" className="text-teal-600 hover:text-teal-700 font-black">
           Masuk
         </Link>
       </p>

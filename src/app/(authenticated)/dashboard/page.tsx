@@ -174,10 +174,10 @@ export default async function DashboardPage() {
               color="from-indigo-600 to-indigo-500"
             />
             <QuickActionCard 
-              href="/cv"
-              title="CV Builder"
-              desc="Generasi CV otomatis"
-              icon={<BarChart3 className="w-6 h-6" />}
+              href="/logbook/rekap-12"
+              title="Rekap Logbook"
+              desc="Lihat laporan & rekap tahunan"
+              icon={<Calendar className="w-6 h-6" />}
               color="from-slate-800 to-slate-700"
             />
             <QuickActionCard 
@@ -265,6 +265,12 @@ function StatCard({ icon, label, value, color, trend }: { icon: any, label: stri
     </Card>
   )
 }
+
+const DASHBOARD_NAV = [
+  { href: '/payment', label: 'Pembayaran Iuran', icon: 'CreditCard' },
+  { href: '/lms', label: 'Portal LMS', icon: 'BookOpen' },
+  { href: '/logbook', label: 'Logbook PMIK', icon: 'BookMarked' },
+]
 
 function QuickActionCard({ href, title, desc, icon, color }: { href: string, title: string, desc: string, icon: any, color: string }) {
   return (

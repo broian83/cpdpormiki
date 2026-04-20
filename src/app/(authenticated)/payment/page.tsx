@@ -55,7 +55,7 @@ export default function PaymentPage() {
         <Card className="md:col-span-2 border-none shadow-xl bg-slate-900 text-white rounded-[2rem] overflow-hidden relative">
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl -mr-32 -mt-32"></div>
           <CardContent className="p-8 relative z-10">
-            <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-widest mb-4">
+            <div className="flex items-center gap-2 text-teal-400 font-bold text-xs uppercase tracking-widest mb-4">
               <Wallet className="w-4 h-4" />
               <span>Status Saldo Iuran</span>
             </div>
@@ -66,7 +66,7 @@ export default function PaymentPage() {
                   Rp {totalUnpaid.toLocaleString('id-ID')}
                 </h3>
               </div>
-              <Button className="bg-primary hover:bg-primary/90 text-white rounded-xl h-12 px-8 font-bold shadow-lg shadow-primary/20">
+              <Button className="bg-teal-500 hover:bg-teal-400 text-white rounded-xl h-12 px-8 font-bold shadow-lg shadow-teal-500/20">
                 Bayar Semua Sekarang
               </Button>
             </div>
@@ -103,13 +103,13 @@ export default function PaymentPage() {
                   <CardContent className="p-6">
                     <div className="flex justify-between items-start">
                       <div className="flex gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover:scale-110 transition-transform">
                           <Receipt className="w-6 h-6" />
                         </div>
                         <div>
                           <p className="font-bold text-slate-900">{inv.jenis_iuran}</p>
                           <p className="text-xs text-slate-500 font-medium">Periode: {inv.periode}</p>
-                          <div className="mt-2 flex items-center gap-1 text-[10px] text-red-500 font-bold uppercase tracking-tighter">
+                          <div className="mt-2 flex items-center gap-1 text-[10px] text-indigo-500 font-bold uppercase tracking-tighter">
                             <AlertCircle className="w-3 h-3" />
                             <span>Jatuh Tempo: {inv.due_date ? new Date(inv.due_date).toLocaleDateString('id-ID') : '-'}</span>
                           </div>

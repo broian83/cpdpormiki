@@ -48,46 +48,54 @@ export function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       {error && (
-        <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
+        <div className="p-4 rounded-2xl bg-rose-50 border border-rose-100 text-rose-600 text-sm font-medium animate-in fade-in duration-300">
           {error}
         </div>
       )}
 
-      <Input
-        label="Email"
-        type="email"
-        placeholder="email@contoh.com"
-        error={errors.email?.message}
-        {...register('email')}
-      />
+      <div className="space-y-4">
+        <Input
+          label="Email"
+          type="email"
+          placeholder="email@contoh.com"
+          error={errors.email?.message}
+          {...register('email')}
+          className="rounded-2xl border-slate-200 focus:border-teal-500 h-12"
+        />
 
-      <Input
-        label="Password"
-        type="password"
-        placeholder="Masukkan password"
-        error={errors.password?.message}
-        {...register('password')}
-      />
+        <Input
+          label="Password"
+          type="password"
+          placeholder="Masukkan password"
+          error={errors.password?.message}
+          {...register('password')}
+          className="rounded-2xl border-slate-200 focus:border-teal-500 h-12"
+        />
+      </div>
 
-      <div className="flex items-center justify-end">
+      <div className="flex items-center justify-end px-1">
         <Link
           href="/forgot-password"
-          className="text-sm text-teal-600 hover:text-teal-700"
+          className="text-sm font-bold text-teal-600 hover:text-teal-700 hover:underline underline-offset-4"
         >
           Lupa Password?
         </Link>
       </div>
 
-      <Button type="submit" className="w-full" isLoading={isLoading}>
-        Masuk
+      <Button 
+        type="submit" 
+        className="w-full bg-teal-600 hover:bg-teal-700 text-white font-black h-12 rounded-2xl shadow-lg shadow-teal-100 transition-all active:scale-95" 
+        isLoading={isLoading}
+      >
+        Masuk Sekarang
       </Button>
 
-      <p className="text-center text-sm text-slate-600">
+      <p className="text-center text-sm text-slate-500 pt-2">
         Belum punya akun?{' '}
-        <Link href="/register" className="text-teal-600 hover:text-teal-700 font-medium">
-          Daftar
+        <Link href="/register" className="text-teal-600 hover:text-teal-700 font-black">
+          Daftar Gratis
         </Link>
       </p>
     </form>

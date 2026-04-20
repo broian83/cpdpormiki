@@ -35,7 +35,7 @@ export const NAV_ITEMS = [
   { href: '/settings', label: 'Account Settings', icon: 'Settings' },
   { href: '/cv', label: 'Curriculum Vitae', icon: 'FileText' },
   { href: '/payment', label: 'Pembayaran Iuran', icon: 'CreditCard' },
-  { href: '/lms', label: 'Keputusan LMS', icon: 'BookOpen' },
+  { href: '/lms', label: 'Portal LMS', icon: 'BookOpen' },
   { href: '/logbook', label: 'Logbook PMIK', icon: 'BookMarked' },
 ]
 
