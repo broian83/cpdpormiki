@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+
 import { Loader2 } from 'lucide-react'
 
 export function ForgotPasswordForm() {
@@ -56,9 +56,9 @@ export function ForgotPasswordForm() {
       </div>
 
       {message && (
-        <Alert variant={message.type === 'success' ? 'default' : 'destructive'} className={message.type === 'success' ? 'bg-emerald-50 border-emerald-100 text-emerald-800' : ''}>
-          <AlertDescription>{message.text}</AlertDescription>
-        </Alert>
+        <div className={`p-4 rounded-xl border text-sm font-medium animate-in fade-in duration-300 ${message.type === 'success' ? 'bg-emerald-50 border-emerald-100 text-emerald-800' : 'bg-rose-50 border-rose-100 text-rose-600'}`}>
+          {message.text}
+        </div>
       )}
 
       <Button
