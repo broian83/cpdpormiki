@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   manifest: '/manifest.json',
 }
 
+export const dynamic = 'force-dynamic'
+
+
 export default function RootLayout({
   children,
 }: {
