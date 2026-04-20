@@ -64,7 +64,7 @@ async function getDashboardStats(userId: string) {
     .from('pmik_profiles')
     .select('nama_pmik')
     .eq('user_id', userId)
-    .single()
+    .maybeSingle()
 
   return {
     totalEntries: logbookData ? 1 : 0,
