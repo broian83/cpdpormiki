@@ -174,7 +174,7 @@ export default function PaymentPage() {
                         <div>
                           <p className="font-medium text-[15px] text-notion-text">{inv.jenis_iuran}</p>
                           <p className="text-xs text-notion-gray font-medium mt-0.5">Periode: {inv.periode}</p>
-                          <div className="mt-2 flex items-center gap-1 text-[11px] text-notion-red font-medium rounded-sm bg-notion-red_bg px-2 py-0.5 inline-flex">
+                          <div className="mt-2 items-center gap-1 text-[11px] text-notion-red font-medium rounded-sm bg-notion-red_bg px-2 py-0.5 inline-flex">
                             <AlertCircle className="w-3 h-3" />
                             <span>Jatuh Tempo: {inv.due_date ? new Date(inv.due_date).toLocaleDateString('id-ID') : '-'}</span>
                           </div>

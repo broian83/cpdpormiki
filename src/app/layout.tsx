@@ -1,5 +1,8 @@
-// @ts-nocheck
 import type { Metadata } from 'next'
+import { Inter, Lora } from 'next/font/google'
+
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
+const lora = Lora({ subsets: ['latin'], variable: '--font-lora' })
 
 import './globals.css'
 
@@ -12,7 +15,6 @@ export const metadata: Metadata = {
   },
 }
 
-export const dynamic = 'force-dynamic'
 
 import { Toaster } from 'sonner'
 import { GlobalConfirmDialog } from '@/components/ui/confirm-modal'
@@ -23,8 +25,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="id">
-      <body>
+    <html lang="id" className={`${inter.variable} ${lora.variable}`}>
+      <body className="antialiased">
         {children}
         <Toaster richColors position="top-right" closeButton />
         <GlobalConfirmDialog />

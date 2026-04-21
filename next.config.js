@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
+  compress: true,
   images: {
     remotePatterns: [
       {
@@ -7,6 +9,7 @@ const nextConfig = {
         hostname: '*.supabase.co',
       },
     ],
+    minimumCacheTTL: 60,
   },
   async headers() {
     return [
@@ -16,6 +19,10 @@ const nextConfig = {
           {
             key: 'X-DNS-Prefetch-Control',
             value: 'on',
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload',
           },
         ],
       },

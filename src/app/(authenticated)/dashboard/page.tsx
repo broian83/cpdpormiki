@@ -20,7 +20,8 @@ import {
   ArrowUpRight,
   ShieldCheck,
   LogIn,
-  PenSquare
+  PenSquare,
+  Clock
 } from 'lucide-react'
 
 async function getDashboardStats(userId: string) {
@@ -92,152 +93,136 @@ export default async function DashboardPage() {
   const stats = await getDashboardStats(session.user.id)
 
   return (
-    <div className="space-y-10 pb-32 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="space-y-8 pb-32 animate-in fade-in duration-500 max-w-2xl mx-auto">
       
-      {/* 1. Hero Welcome Section */}
-      <section className="relative -mx-6 px-6 pt-2 pb-12 overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-notion-blue opacity-[0.03] blur-[100px] rounded-full -mr-20 -mt-20" />
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-notion-red opacity-[0.02] blur-[100px] rounded-full -ml-20 -mb-20" />
-        
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-3">
-             <div className="w-12 h-12 rounded-2xl bg-white shadow-sm border border-[#EFEFEF] flex items-center justify-center">
-                <User size={24} className="text-notion-gray opacity-40" />
-             </div>
-             <div>
-                <p className="text-[10px] font-black text-notion-blue uppercase tracking-widest leading-none mb-1">PROFIL AKTIF</p>
-                <h1 className="text-xl font-serif font-black text-notion-text tracking-tight">{stats.profileName}</h1>
-             </div>
-          </div>
-          <button className="relative p-2 bg-white border border-[#EFEFEF] rounded-xl shadow-sm active:scale-90 transition-transform">
-             <MessageSquare size={20} className="text-notion-gray" />
-             {stats.unreadMessages > 0 && (
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-notion-red rounded-full border-2 border-white" />
-             )}
-          </button>
-        </div>
-
-        {/* Dynamic Promo/Action Card */}
-        <div className="relative group overflow-hidden bg-notion-text rounded-[2.5rem] p-8 shadow-2xl shadow-stone-200">
-           <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform duration-700">
-              <Zap size={150} />
+      {/* 1. Header Area Boxy Style */}
+      <section className="flex items-start justify-between border-b border-[#EFEFEF] pb-6 pt-4">
+        <div className="flex items-center gap-4">
+           <div className="w-14 h-14 bg-stone-100 border border-[#EFEFEF] rounded-md flex items-center justify-center">
+              <User size={24} className="text-notion-gray" />
            </div>
-           <div className="relative z-10 space-y-4">
-              <Badge className="bg-white/10 text-white/80 border-transparent backdrop-blur-md px-3 py-1 font-bold text-[10px] tracking-widest uppercase">Target SKP 2026</Badge>
-              <h2 className="text-2xl font-serif font-bold text-white leading-tight">Terus Tingkatkan Kompetensi Anda.</h2>
-              <div className="flex items-center gap-2">
-                 <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
-                    <div className="h-full bg-notion-blue w-[45%] rounded-full shadow-[0_0_10px_rgba(0,123,255,0.5)]" />
+           <div>
+              <p className="text-[10px] font-black text-notion-gray uppercase tracking-widest leading-none mb-1">PROFIL AKTIF</p>
+              <h1 className="text-xl font-serif font-black text-notion-text tracking-tight">{stats.profileName}</h1>
+           </div>
+        </div>
+        
+        <Link href="/messages" className="relative p-2 bg-stone-50 border border-[#EFEFEF] rounded-md hover:bg-stone-100 transition-colors">
+           <MessageSquare size={20} className="text-notion-text" />
+           {stats.unreadMessages > 0 && (
+              <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white" />
+           )}
+        </Link>
+      </section>
+
+      {/* 2. Hero Promo Box */}
+      <section>
+        <div className="bg-notion-text border border-stone-800 rounded-md p-6 relative overflow-hidden flex flex-col md:flex-row items-center gap-6 justify-between">
+            <div className="relative z-10 space-y-2 flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                 <Zap size={14} className="text-yellow-400" />
+                 <span className="text-[10px] font-black text-white/70 tracking-widest uppercase">Target SKP Tahunan</span>
+              </div>
+              <h2 className="text-lg font-bold text-white leading-tight">Terus Tingkatkan Kompetensi Profesi Anda.</h2>
+              <div className="flex items-center gap-3 pt-2">
+                 <div className="flex-1 h-1.5 bg-white/20 rounded-full overflow-hidden">
+                    <div className="h-full bg-yellow-400 w-[45%]" />
                  </div>
-                 <span className="text-[10px] font-black text-white/50 tracking-tighter">45%</span>
+                 <span className="text-[10px] font-black text-white tracking-widest">45%</span>
               </div>
-              <Button className="mt-4 bg-white text-notion-text hover:bg-stone-100 rounded-2xl h-12 px-6 font-bold shadow-none">
-                 Lanjutkan Belajar <ArrowUpRight className="ml-2 w-4 h-4" />
-              </Button>
-           </div>
+            </div>
+            <Button variant="inverted" className="w-full md:w-auto px-6 font-bold text-[10px] uppercase tracking-widest shrink-0 whitespace-nowrap">
+               Lihat Detail
+            </Button>
         </div>
       </section>
 
-      {/* 2. Stats Grid */}
-      <section className="grid grid-cols-2 gap-4">
-        <StatCard 
-          icon={<PenSquare size={24} className="text-notion-blue" />}
+      {/* 3. Main Stats Grid */}
+      <section className="grid grid-cols-2 gap-4 -mx-2 px-2 md:-mx-0 md:px-0">
+        <StatBox 
+          icon={<PenSquare size={18} className="text-notion-blue" />}
           label="Total Kegiatan"
-          value={stats.totalActivities}
-          subLabel="Bulan ini"
-          bgColor="bg-blue-50/50"
-          borderColor="border-blue-100/50"
+          value={stats.totalActivities.toString()}
+          subLabel="Bulan Ini"
+          iconBg="bg-blue-50"
         />
-        <StatCard 
-          icon={<CreditCard size={24} className="text-notion-orange" />}
+        <StatBox 
+          icon={<CreditCard size={18} className="text-orange-500" />}
           label="Tagihan Iuran"
-          value={stats.unpaidInvoices.length}
-          subLabel="Awaiting Payment"
-          bgColor="bg-orange-50/50"
-          borderColor="border-orange-100/50"
+          value={stats.unpaidInvoices.length.toString()}
+          subLabel="Belum Dibayar"
+          iconBg="bg-orange-50"
         />
       </section>
 
-      {/* 3. Main Services */}
-      <section className="space-y-6">
-        <div className="flex items-center justify-between">
-           <h3 className="text-sm font-serif font-bold text-notion-text">Layanan Utama</h3>
-           <div className="w-8 h-[1px] bg-stone-200" />
-        </div>
-        <div className="grid grid-cols-4 gap-x-2 gap-y-8">
-           <ServiceIcon 
-              icon={<PenSquare size={24} />} 
-              label="Logbook" 
-              href="/logbook" 
-              color="bg-blue-500"
-           />
-           <ServiceIcon 
-              icon={<BookOpen size={24} />} 
-              label="LMS" 
-              href="/lms" 
-              color="bg-purple-500"
-           />
-           <ServiceIcon 
-              icon={<ShieldCheck size={24} />} 
-              label="Borang" 
-              href="/profile" 
-              color="bg-emerald-500"
-           />
-           <ServiceIcon 
-              icon={<LayoutDashboard size={24} />} 
-              label="Lainnya" 
-              href="/dashboard" 
-              color="bg-stone-500"
-           />
+      {/* 4. Main Nav Grid (Layaknya Aplikasi/Widget) */}
+      <section className="space-y-4">
+        <h3 className="text-[10px] font-black text-notion-gray uppercase tracking-[0.3em] px-1">Menu Utama</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+           <NavBox icon={<PenSquare size={20} />} label="Logbook" href="/logbook" color="bg-notion-blue" />
+           <NavBox icon={<BookOpen size={20} />} label="LMS PMIK" href="/lms" color="bg-purple-500" />
+           <NavBox icon={<ShieldCheck size={20} />} label="Sertifikasi" href="/profile" color="bg-emerald-500" />
+           <NavBox icon={<LayoutDashboard size={20} />} label="Menu Lain" href="/dashboard" color="bg-stone-700" />
         </div>
       </section>
 
-      {/* 4. Recent Activity / Invoices */}
+      {/* 5. Invoices List Boxy */}
       <section className="space-y-4">
-        <div className="flex items-center justify-between">
-            <h3 className="text-sm font-serif font-bold text-notion-text">Tagihan Terbaru</h3>
-            <Link href="/payment" className="text-[10px] font-black uppercase text-notion-blue hover:underline">Semua</Link>
+        <div className="flex items-center justify-between px-1">
+            <h3 className="text-[10px] font-black text-notion-gray uppercase tracking-[0.3em]">Tagihan Tertunda</h3>
+            <Link href="/payment" className="text-[10px] font-bold text-notion-blue hover:underline">Lihat Semua</Link>
         </div>
         
-        <div className="space-y-4">
+        <div className="bg-white border border-[#EFEFEF] rounded-md overflow-hidden">
           {stats.unpaidInvoices.length > 0 ? (
-            stats.unpaidInvoices.map((invoice) => (
-              <div key={invoice.id} className="group relative bg-white border border-[#EFEFEF] p-5 rounded-[2rem] flex items-center gap-4 hover:shadow-xl hover:shadow-stone-200/50 hover:border-notion-blue transition-all duration-500">
-                <div className="w-14 h-14 bg-stone-50 rounded-2xl flex items-center justify-center shrink-0 border border-[#EFEFEF] group-hover:bg-blue-50 group-hover:border-blue-100 transition-colors">
-                   <CreditCard size={24} className="text-notion-gray group-hover:text-notion-blue transition-colors" />
+            <div className="divide-y divide-[#EFEFEF]">
+              {stats.unpaidInvoices.map((invoice) => (
+                <div key={invoice.id} className="p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white hover:bg-stone-50 transition-colors">
+                  <div className="flex items-center gap-4">
+                     <div className="w-10 h-10 bg-orange-50 rounded-md flex items-center justify-center shrink-0 border border-orange-100">
+                        <CreditCard size={18} className="text-orange-600" />
+                     </div>
+                     <div>
+                        <h4 className="text-sm font-bold text-notion-text">{invoice.jenis_iuran}</h4>
+                        <p className="text-[10px] text-notion-gray uppercase tracking-widest mt-0.5">{invoice.periode}</p>
+                     </div>
+                  </div>
+                  <div className="flex items-center justify-between md:justify-end gap-6 md:w-auto w-full pt-2 md:pt-0 border-t md:border-t-0 border-[#EFEFEF]">
+                     <div className="text-left md:text-right">
+                        <div className="text-sm font-black text-notion-text">Rp{invoice.nominal.toLocaleString('id-ID')}</div>
+                        <div className="text-[9px] font-bold text-red-500 uppercase tracking-widest">Awaiting</div>
+                     </div>
+                     <Link href="/payment">
+                       <Button className="h-8 px-4 bg-notion-text text-white text-[9px] uppercase tracking-widest rounded-md shrink-0">
+                         Bayar
+                       </Button>
+                     </Link>
+                  </div>
                 </div>
-                <div className="flex-1">
-                   <h4 className="text-sm font-bold text-notion-text">{invoice.jenis_iuran}</h4>
-                   <p className="text-[10px] text-notion-gray font-bold uppercase tracking-widest mt-1 opacity-60">{invoice.periode}</p>
-                </div>
-                <div className="text-right">
-                   <div className="text-sm font-black text-notion-text">Rp{invoice.nominal.toLocaleString('id-ID')}</div>
-                   <div className="text-[9px] font-bold text-red-500 uppercase tracking-tighter mt-1">Belum Bayar</div>
-                </div>
-              </div>
-            ))
+              ))}
+            </div>
           ) : (
-            <div className="py-16 text-center bg-[#F7F7F5]/50 rounded-[3rem] border border-dashed border-[#DEDEDE] space-y-3">
-               <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto shadow-sm border border-[#EFEFEF]">
-                  <ShieldCheck className="text-green-500 w-8 h-8" />
-               </div>
-               <div>
-                  <p className="text-sm font-bold text-notion-text">Administrasi Aman</p>
-                  <p className="text-[10px] text-notion-gray uppercase font-bold tracking-widest mt-1">Tidak ada tagihan tertunda saat ini</p>
-               </div>
+            <div className="p-8 text-center bg-stone-50 flex flex-col items-center justify-center">
+               <ShieldCheck className="text-emerald-500 w-8 h-8 mb-3 opacity-50" />
+               <p className="text-xs font-bold text-notion-text">Tidak ada tagihan tertunda</p>
+               <p className="text-[10px] text-notion-gray uppercase font-bold tracking-widest mt-1">Status keanggotaan Anda bersih</p>
             </div>
           )}
         </div>
       </section>
 
-      {/* 5. Footer CTA */}
-      <section className="pt-8">
-         <div className="p-8 bg-notion-blue/5 border border-notion-blue/10 rounded-[2.5rem] text-center space-y-4">
-            <h4 className="text-sm font-serif font-bold text-notion-text">Butuh bantuan teknis?</h4>
-            <p className="text-xs text-notion-gray leading-relaxed">Tim support kami siap membantu kendala aplikasi dan akun Anda.</p>
-            <Button variant="outline" className="rounded-2xl border-[#EFEFEF] shadow-none h-11 px-8 font-bold text-xs uppercase tracking-widest">
-               Hubungi CS
-            </Button>
+      {/* 6. Footer Support */}
+      <section className="pt-4">
+         <div className="p-6 border border-[#EFEFEF] bg-stone-50 rounded-md flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="text-center md:text-left">
+              <h4 className="text-xs font-bold text-notion-text uppercase tracking-widest mb-1">Pusat Bantuan PMIK</h4>
+              <p className="text-[11px] text-notion-gray font-medium">Kendala teknis akun atau aplikasi?</p>
+            </div>
+            <Link href="/help" className="w-full md:w-auto">
+              <Button variant="default" className="w-full px-6 font-bold text-[10px] uppercase tracking-widest whitespace-nowrap">
+                 Hubungi CS
+              </Button>
+            </Link>
          </div>
       </section>
 
@@ -245,33 +230,30 @@ export default async function DashboardPage() {
   )
 }
 
-function StatCard({ icon, label, value, subLabel, bgColor, borderColor }: any) {
+function StatBox({ icon, label, value, subLabel, iconBg }: any) {
   return (
-    <div className={cn("p-6 rounded-[2.5rem] border shadow-sm transition-all hover:shadow-md", bgColor, borderColor)}>
-       <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6 border border-white/50">
-          {icon}
+    <div className="p-4 bg-white rounded-md border border-[#EFEFEF] flex flex-col justify-between hover:border-stone-300 transition-colors">
+       <div className="flex items-center justify-between mb-4">
+          <div className={cn("w-8 h-8 rounded-md flex items-center justify-center", iconBg)}>
+             {icon}
+          </div>
+          <span className="text-[9px] font-bold text-notion-gray uppercase tracking-widest">{subLabel}</span>
        </div>
-       <p className="text-[10px] uppercase font-black text-stone-500 tracking-[0.1em] mb-1">{label}</p>
-       <div className="flex items-baseline gap-2">
-          <p className="text-3xl font-serif font-black text-notion-text">{value}</p>
-          <span className="text-[10px] font-bold text-stone-400 capitalize">{subLabel}</span>
+       <div>
+          <p className="text-2xl font-serif font-black text-notion-text leading-none mb-1">{value}</p>
+          <p className="text-[10px] uppercase font-bold text-notion-gray tracking-widest">{label}</p>
        </div>
     </div>
   )
 }
 
-function ServiceIcon({ icon, label, href, color }: any) {
+function NavBox({ icon, label, href, color }: any) {
   return (
-    <Link href={href} className="flex flex-col items-center gap-3 active:scale-90 transition-transform group">
-      <div className={cn(
-        "w-16 h-16 rounded-[1.8rem] flex items-center justify-center shadow-sm border border-stone-100 transition-all duration-300",
-        "bg-white group-hover:shadow-xl group-hover:-translate-y-1 group-hover:border-transparent"
-      )}>
-        <div className={cn("w-10 h-10 rounded-2xl flex items-center justify-center text-white shadow-inner", color)}>
-          {icon}
-        </div>
+    <Link href={href} className="group flex flex-col items-center justify-center p-4 bg-white border border-[#EFEFEF] rounded-md hover:border-notion-blue hover:shadow-sm transition-all text-center gap-3">
+      <div className={cn("w-10 h-10 rounded-md flex items-center justify-center text-white shrink-0 group-hover:scale-110 transition-transform", color)}>
+        {icon}
       </div>
-      <span className="text-[10px] font-black text-notion-text text-center uppercase tracking-widest group-hover:text-notion-blue transition-colors">{label}</span>
+      <span className="text-[9px] font-black text-notion-text uppercase tracking-widest group-hover:text-notion-blue transition-colors leading-tight">{label}</span>
     </Link>
   )
 }

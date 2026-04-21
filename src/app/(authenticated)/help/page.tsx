@@ -180,8 +180,8 @@ export default function HelpPage() {
          </div>
          <Button 
            onClick={() => router.push('/help/directory')} 
-           variant="outline" 
-           className="w-full md:w-auto h-11 px-6 rounded-md border-[#EFEFEF] bg-white text-[10px] font-black uppercase tracking-widest text-notion-text hover:bg-white hover:border-notion-text transition-all shadow-sm"
+           variant="default" 
+           className="w-full md:w-auto px-6 font-bold uppercase tracking-widest text-[10px]"
          >
             <BookOpen size={14} className="mr-2" /> Direktori DPD/DPC
          </Button>

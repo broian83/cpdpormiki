@@ -215,9 +215,9 @@ export default function InputLogbookPage() {
 
            <Button 
              type="button" 
-             variant="outline" 
+             variant="ghost" 
              onClick={() => append({ activity_category_id: '', jumlah_kegitan: 0, keterangan: '' })}
-             className="w-full h-12 rounded-md border-2 border-dashed border-[#EFEFEF] bg-white text-notion-gray hover:text-notion-text hover:border-notion-gray/30 transition-all font-black uppercase text-[10px] tracking-[0.2em]"
+             className="w-full border-2 border-dashed border-stone-200 hover:border-stone-400 font-bold uppercase text-[10px] tracking-widest py-6"
            >
              <Plus className="w-4 h-4 mr-2" />
              Tambah Baris Kegiatan
@@ -228,16 +228,19 @@ export default function InputLogbookPage() {
         <div className="pt-8 border-t border-[#EFEFEF] flex flex-col md:flex-row gap-3">
            <Button 
              type="submit" 
-             className="flex-1 bg-notion-text text-white hover:bg-stone-800 h-12 rounded-md font-black uppercase text-[11px] tracking-widest shadow-sm" 
+             variant="default"
+             size="lg"
+             className="flex-1 font-bold uppercase text-[10px] tracking-widest" 
              isLoading={isSubmitting}
            >
              <Save className="w-4 h-4 mr-2" /> Simpan Logbook
            </Button>
            <Button 
              type="button" 
-             variant="outline" 
+             variant="secondary" 
+             size="lg"
              onClick={() => router.back()}
-             className="md:w-40 h-12 rounded-md font-black uppercase text-[10px] tracking-widest text-notion-gray border-[#EFEFEF]"
+             className="md:w-40 font-bold uppercase text-[10px] tracking-widest"
            >
              Batal
            </Button>
