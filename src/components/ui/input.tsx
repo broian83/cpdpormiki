@@ -3,8 +3,6 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 
-let inputCounter = 0
-
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string
   error?: string
@@ -13,7 +11,8 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, label, error, helperText, id, ...props }, ref) => {
-    const inputId = id || `input-${++inputCounter}`
+    const generatedId = React.useId()
+    const inputId = id || generatedId
 
     return (
       <div className="w-full">

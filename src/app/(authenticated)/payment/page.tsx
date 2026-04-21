@@ -61,6 +61,35 @@ export default function PaymentPage() {
     }
   }
 
+  const handleBayarMassal = async (ids: string, nominal: number, description: string) => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) return
+
+      const response = await fetch('/api/mayar/create-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          invoiceIds: ids,
+          amount: nominal,
+          description: description,
+          customerName: session.user.user_metadata?.full_name || '',
+          customerEmail: session.user.email
+        })
+      })
+
+      const data = await response.json()
+      if (data.paymentUrl) {
+        window.location.href = data.paymentUrl
+      } else {
+        alert('Gagal membuat koneksi pembayaran massal: ' + (data.error || 'Unknown Error'))
+      }
+    } catch (error) {
+      console.error('Payment Flow Error:', error)
+      alert('Terjadi kesalahan saat memproses pembayaran massal.')
+    }
+  }
+
   const unpaidInvoices = invoices.filter(i => i.status === 'unpaid')
   const paidInvoices = invoices.filter(i => i.status === 'paid')
   const totalUnpaid = unpaidInvoices.reduce((sum, inv) => sum + inv.nominal, 0)
@@ -97,9 +126,18 @@ export default function PaymentPage() {
                   Rp {totalUnpaid.toLocaleString('id-ID')}
                 </h3>
               </div>
-              <Button className="bg-notion-blue text-white hover:bg-notion-blue/90 rounded-sm h-10 px-6 font-medium shadow-none transition-colors">
-                Bayar Semua
-              </Button>
+              {totalUnpaid > 0 && (
+                <Button 
+                  onClick={() => {
+                    const ids = unpaidInvoices.map(i => i.id).join(',')
+                    const desc = 'Pembayaran Seluruh Tagihan (' + unpaidInvoices.length + ' Item)'
+                    handleBayarMassal(ids, totalUnpaid, desc)
+                  }}
+                  className="bg-notion-blue text-white hover:bg-notion-blue/90 rounded-sm h-10 px-6 font-medium shadow-none transition-colors"
+                >
+                  Bayar Semua
+                </Button>
+              )}
             </div>
         </div>
 

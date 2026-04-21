@@ -17,6 +17,7 @@ ALTER TABLE public.payment_transactions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.lms_courses ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.lms_modules ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.lms_enrollments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.lms_user_modules ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.activity_categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.monthly_logbooks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.monthly_logbook_details ENABLE ROW LEVEL SECURITY;
@@ -139,6 +140,15 @@ CREATE POLICY "Users can enroll in courses" ON public.lms_enrollments
 
 CREATE POLICY "Users can update own enrollments" ON public.lms_enrollments
     FOR UPDATE USING (auth.uid() = user_id);
+
+-- ============================================
+-- LMS USER MODULES POLICIES
+-- ============================================
+CREATE POLICY "Users can view own module progress" ON public.lms_user_modules
+    FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can update own module progress" ON public.lms_user_modules
+    FOR ALL USING (auth.uid() = user_id);
 
 -- ============================================
 -- ACTIVITY CATEGORIES POLICIES

@@ -1,30 +1,46 @@
 import Link from 'next/link'
 import { ForgotPasswordForm } from '@/components/auth/forgot-password-form'
+import { ArrowLeft, KeyRound } from 'lucide-react'
 
 export default function ForgotPasswordPage() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-br from-teal-50 to-indigo-50">
-      <div className="w-full max-w-md animate-in fade-in slide-in-from-bottom-4 duration-500">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-teal-100 mb-4 shadow-inner">
-            <svg className="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
-            </svg>
+    <div className="min-h-screen bg-[#F8F9FA] flex flex-col items-center justify-center p-0 sm:p-4 overflow-hidden">
+      {/* Decorative Background Elements */}
+      <div className="absolute top-[-5%] right-[-5%] w-[45%] h-[45%] bg-notion-orange/5 rounded-full blur-[120px]" />
+      
+      {/* Container Mobile Shell */}
+      <div className="w-full max-w-md bg-white sm:rounded-[2.5rem] sm:min-h-[80vh] shadow-[0_32px_64px_-12px_rgba(0,0,0,0.08)] flex flex-col border border-[#EFEFEF] overflow-hidden relative animate-in fade-in zoom-in-95 duration-1000">
+        
+        <div className="p-6">
+           <Link href="/login" className="inline-flex items-center gap-2 p-2.5 bg-stone-50 border border-[#EFEFEF] rounded-xl text-notion-gray hover:text-notion-text hover:bg-stone-100 transition-all active:scale-90">
+             <ArrowLeft size={18} />
+             <span className="text-xs font-bold uppercase tracking-wider pr-1">Kembali</span>
+           </Link>
+        </div>
+        
+        <main className="flex-1 px-8 py-4">
+          <div className="mb-10 animate-in slide-in-from-top-4 duration-700 delay-200">
+            <div className="w-12 h-12 bg-notion-orange/10 rounded-xl flex items-center justify-center mb-6 border border-notion-orange/20">
+               <KeyRound size={24} className="text-notion-orange" />
+            </div>
+            <h1 className="text-4xl font-serif font-black tracking-tight text-notion-text leading-tight">
+              Lupa Password <span className="text-notion-orange">?</span>
+            </h1>
+            <p className="text-notion-gray mt-4 text-[15px] leading-relaxed font-medium">
+              Masukkan email terdaftar Anda. Kami akan mengirimkan tautan untuk mengatur ulang kata sandi Anda.
+            </p>
           </div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Lupa Password?</h1>
-          <p className="text-slate-500 mt-2">Jangan khawatir, masukkan email Anda untuk mereset.</p>
-        </div>
 
-        <div className="bg-white rounded-[2rem] shadow-2xl shadow-slate-200/50 p-8 border border-white">
-          <ForgotPasswordForm />
-        </div>
+          <div className="animate-in slide-in-from-bottom-4 duration-700 delay-300">
+             <div className="bg-white border border-[#EFEFEF] rounded-[2rem] p-8 shadow-sm">
+                <ForgotPasswordForm />
+             </div>
+          </div>
+        </main>
 
-        <p className="text-center text-sm text-slate-500 mt-8">
-          Sudah ingat password?{' '}
-          <Link href="/login" className="font-bold text-teal-600 hover:text-teal-700 underline-offset-4 hover:underline">
-            Masuk Sekarang
-          </Link>
-        </p>
+        <footer className="p-10 text-center">
+           <p className="text-[10px] text-notion-gray font-black uppercase tracking-[0.4em] opacity-30">Security Verification Required</p>
+        </footer>
       </div>
     </div>
   )

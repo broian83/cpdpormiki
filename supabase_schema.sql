@@ -7,6 +7,16 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- ============================================
+-- TABLE: system_settings
+-- ============================================
+CREATE TABLE IF NOT EXISTS public.system_settings (
+    id VARCHAR(100) PRIMARY KEY,
+    value TEXT,
+    description TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- ============================================
 -- TABLE: users
 -- ============================================
 CREATE TABLE IF NOT EXISTS public.users (
@@ -155,7 +165,20 @@ CREATE TABLE IF NOT EXISTS public.lms_enrollments (
     course_id UUID REFERENCES public.lms_courses(id) ON DELETE CASCADE,
     enrolled_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     progress_percent NUMERIC(5, 2) DEFAULT 0,
-    status VARCHAR(50) DEFAULT 'enrolled'
+    status VARCHAR(50) DEFAULT 'enrolled',
+    UNIQUE(user_id, course_id)
+);
+
+-- ============================================
+-- TABLE: lms_user_modules (Progress per module)
+-- ============================================
+CREATE TABLE IF NOT EXISTS public.lms_user_modules (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+    module_id UUID REFERENCES public.lms_modules(id) ON DELETE CASCADE,
+    is_completed BOOLEAN DEFAULT FALSE,
+    completed_at TIMESTAMP WITH TIME ZONE,
+    UNIQUE(user_id, module_id)
 );
 
 -- ============================================
@@ -180,6 +203,7 @@ CREATE TABLE IF NOT EXISTS public.monthly_logbooks (
     tahun INTEGER NOT NULL,
     bulan INTEGER NOT NULL,
     status_draft BOOLEAN DEFAULT TRUE,
+    status VARCHAR(50) DEFAULT 'pending', -- pending, validated, revision_needed
     tanggal_submit TIMESTAMP WITH TIME ZONE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
@@ -215,8 +239,34 @@ CREATE TABLE IF NOT EXISTS public.report_exports (
 );
 
 -- ============================================
--- INDEXES FOR PERFORMANCE
+-- TABLE: system_settings
+-- Stores global configuration like API keys
 -- ============================================
+CREATE TABLE IF NOT EXISTS public.system_settings (
+    id VARCHAR(255) PRIMARY KEY,
+    value TEXT NOT NULL,
+    description TEXT,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+
+-- ============================================
+-- TABLE: help_tickets
+-- ============================================
+CREATE TABLE IF NOT EXISTS public.help_tickets (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+    ticket_number VARCHAR(50) UNIQUE NOT NULL,
+    subject VARCHAR(500),
+    description TEXT NOT NULL,
+    type VARCHAR(100) DEFAULT 'Ticketing',
+    category VARCHAR(100),
+    urgency VARCHAR(50) DEFAULT 'Normal',
+    status VARCHAR(50) DEFAULT 'open',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- INDEXES FOR PERFORMANCE
 CREATE INDEX IF NOT EXISTS idx_pmik_profiles_user_id ON public.pmik_profiles(user_id);
 CREATE INDEX IF NOT EXISTS idx_account_settings_user_id ON public.account_settings(user_id);
 CREATE INDEX IF NOT EXISTS idx_cvs_user_id ON public.cvs(user_id);
@@ -230,3 +280,5 @@ CREATE INDEX IF NOT EXISTS idx_monthly_logbooks_user_id ON public.monthly_logboo
 CREATE INDEX IF NOT EXISTS idx_monthly_logbooks_user_tahun_bulan ON public.monthly_logbooks(user_id, tahun, bulan);
 CREATE INDEX IF NOT EXISTS idx_monthly_logbook_details_logbook_id ON public.monthly_logbook_details(logbook_id);
 CREATE INDEX IF NOT EXISTS idx_report_exports_user_id ON public.report_exports(user_id);
+CREATE INDEX IF NOT EXISTS idx_help_tickets_user_id ON public.help_tickets(user_id);
+CREATE INDEX IF NOT EXISTS idx_help_tickets_status ON public.help_tickets(status);

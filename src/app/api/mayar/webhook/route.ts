@@ -17,10 +17,21 @@ export async function POST(request: Request) {
     const { event, data } = body
 
     if (event === 'payment.received' || event === 'payment.success') {
-      const invoiceId = data.metadata?.invoiceId || data.note?.match(/INV-\d+/)?.[0] 
-      
-      // If we saved invoiceId in metadata during creation
-      if (invoiceId) {
+      const invoiceId = data.metadata?.invoiceId
+      const invoiceIds = data.metadata?.invoiceIds // Comma separated string for batch
+
+      if (invoiceIds) {
+        const ids = invoiceIds.split(',').map((id: string) => id.trim())
+        const { error } = await supabaseAdmin
+          .from('payment_invoices')
+          .update({ status: 'paid', paid_at: new Date().toISOString() })
+          .in('id', ids)
+
+        if (error) {
+          console.error('Batch update error:', error)
+          return NextResponse.json({ error: 'Failed to update invoices' }, { status: 500 })
+        }
+      } else if (invoiceId) {
         const { error } = await supabaseAdmin
           .from('payment_invoices')
           .update({ status: 'paid', paid_at: new Date().toISOString() })
@@ -30,8 +41,6 @@ export async function POST(request: Request) {
           console.error('Database update error:', error)
           return NextResponse.json({ error: 'Failed to update invoice' }, { status: 500 })
         }
-
-        console.log(`Invoice ${invoiceId} marked as PAID via Mayar Webhook`)
       }
     }
 

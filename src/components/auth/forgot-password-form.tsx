@@ -41,22 +41,22 @@ export function ForgotPasswordForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-notion-gray">Email Address</Label>
         <Input
           id="email"
           type="email"
-          placeholder="pmik@example.com"
+          placeholder="your@email.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="rounded-xl border-slate-200 focus:border-teal-500 focus:ring-teal-500"
+          className="rounded-sm border-[#EFEFEF] focus:border-notion-gray focus:ring-0 h-10 text-[14px] shadow-none bg-stone-50/30"
         />
       </div>
 
       {message && (
-        <div className={`p-4 rounded-xl border text-sm font-medium animate-in fade-in duration-300 ${message.type === 'success' ? 'bg-emerald-50 border-emerald-100 text-emerald-800' : 'bg-rose-50 border-rose-100 text-rose-600'}`}>
+        <div className={`p-3 rounded-sm border text-[13px] font-medium animate-in fade-in duration-300 ${message.type === 'success' ? 'bg-notion-green_bg border-notion-green/10 text-notion-green' : 'bg-notion-red_bg border-notion-red/10 text-notion-red'}`}>
           {message.text}
         </div>
       )}
@@ -64,7 +64,7 @@ export function ForgotPasswordForm() {
       <Button
         type="submit"
         disabled={loading}
-        className="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold h-12 rounded-xl shadow-lg shadow-teal-100 transition-all active:scale-95"
+        className="w-full bg-notion-blue text-white hover:bg-notion-blue/90 font-bold h-10 rounded-sm shadow-none text-sm transition-all active:scale-[0.98]"
       >
         {loading ? (
           <>

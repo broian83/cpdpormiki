@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { cn } from '@/lib/utils'
 import { 
   BarChart3, 
   MessageSquare, 
@@ -16,7 +17,10 @@ import {
   LayoutDashboard,
   Calendar,
   Zap,
-  ArrowUpRight
+  ArrowUpRight,
+  ShieldCheck,
+  LogIn,
+  PenSquare
 } from 'lucide-react'
 
 async function getDashboardStats(userId: string) {
@@ -88,158 +92,186 @@ export default async function DashboardPage() {
   const stats = await getDashboardStats(session.user.id)
 
   return (
-    <div className="space-y-12 pb-16 animate-in fade-in duration-500">
-      {/* Document Title / Welcome */}
-      <div className="pt-6 border-b border-[#EFEFEF] pb-8">
-        <h1 className="text-4xl md:text-5xl font-serif font-semibold text-notion-text mb-4 tracking-tight">
-          Welcome, {stats.profileName}
-        </h1>
-        <p className="text-notion-gray text-lg max-w-2xl leading-relaxed">
-          Pantau progres capaian SKP dan aktifitas keprofesian Anda secara real-time. Mulai dengan membuat logbook baru atau menyelesaikan tagihan Anda.
-        </p>
-        <div className="mt-6">
-          <Link href="/logbook/input">
-            <Button className="bg-notion-text text-white hover:bg-[#201F1C] rounded-md px-5 h-9 font-medium shadow-none text-sm transition-colors">
-              <PlusCircle className="mr-2 h-4 w-4" />
-              Input Logbook
-            </Button>
-          </Link>
-        </div>
-      </div>
-
-      {/* Overview Stats */}
-      <div className="space-y-4">
-        <h2 className="text-2xl font-serif font-semibold text-notion-text">Overview</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <StatCard 
-            icon={<Calendar className="w-5 h-5 text-notion-blue" />}
-            label="Logbook Bulan Ini"
-            value={stats.totalEntries.toString()}
-            color="bg-notion-blue_bg border-[#EFEFEF]"
-          />
-          <StatCard 
-            icon={<TrendingUp className="w-5 h-5 text-notion-green" />}
-            label="Total Kegiatan"
-            value={stats.totalActivities.toString()}
-            color="bg-notion-green_bg border-[#EFEFEF]"
-          />
-          <StatCard 
-            icon={<MessageSquare className="w-5 h-5 text-notion-orange" />}
-            label="Pesan Belum Dibaca"
-            value={stats.unreadMessages.toString()}
-            color="bg-notion-orange_bg border-[#EFEFEF]"
-          />
-          <StatCard 
-            icon={<Zap className="w-5 h-5 text-notion-gray" />}
-            label="Tagihan Aktif"
-            value={stats.unpaidInvoices.length.toString()}
-            color="bg-stone-50 border-[#EFEFEF]"
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-4">
-        {/* Quick Links Section */}
-        <div className="lg:col-span-2 space-y-4">
-          <h2 className="text-2xl font-serif font-semibold text-notion-text mb-4">Quick Links</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <QuickActionCard 
-              href="/private-area"
-              title="Private Area"
-              icon="📄"
-            />
-            <QuickActionCard 
-              href="/lms"
-              title="Portal LMS"
-              icon="🎓"
-            />
-            <QuickActionCard 
-              href="/logbook/rekap-12"
-              title="Rekap Logbook"
-              icon="📊"
-            />
-            <QuickActionCard 
-              href="/profile"
-              title="Pengaturan Profil"
-              icon="👤"
-            />
-          </div>
-        </div>
-
-        {/* Side Panel: Invoices & Info */}
-        <div className="space-y-8">
-           <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-serif font-semibold text-notion-text">Tagihan</h2>
-              <Link href="/payment" className="text-sm text-notion-gray hover:text-notion-text transition-colors">
-                View All
-              </Link>
-            </div>
-            
-            <div className="border border-[#EFEFEF] rounded-md overflow-hidden bg-white">
-                {stats.unpaidInvoices.length > 0 ? (
-                  <div className="divide-y divide-[#EFEFEF]">
-                    {stats.unpaidInvoices.map((invoice) => (
-                      <div key={invoice.id} className="p-4 bg-white hover:bg-stone-50 transition-colors cursor-pointer flex justify-between items-center group">
-                        <div>
-                          <p className="text-sm font-medium text-notion-text">{invoice.jenis_iuran}</p>
-                          <p className="text-xs text-notion-gray mt-0.5">{invoice.periode}</p>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-sm text-notion-text font-medium">
-                            Rp {invoice.nominal.toLocaleString('id-ID')}
-                          </p>
-                          <span className="inline-block mt-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-notion-red_bg text-notion-red">Unpaid</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="p-6 text-center text-notion-gray text-sm flex flex-col items-center">
-                    <span className="text-2xl mb-2">🎉</span>
-                    Tidak ada tagihan tertunda
-                  </div>
-                )}
-            </div>
-          </div>
-
-          {/* Info Card */}
-          <div className="p-4 bg-notion-bg border border-[#EFEFEF] rounded-md flex gap-3 shadow-none">
-             <div className="mt-0.5 text-notion-yellow">💡</div>
+    <div className="space-y-10 pb-32 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      
+      {/* 1. Hero Welcome Section */}
+      <section className="relative -mx-6 px-6 pt-2 pb-12 overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-notion-blue opacity-[0.03] blur-[100px] rounded-full -mr-20 -mt-20" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-notion-red opacity-[0.02] blur-[100px] rounded-full -ml-20 -mb-20" />
+        
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-3">
+             <div className="w-12 h-12 rounded-2xl bg-white shadow-sm border border-[#EFEFEF] flex items-center justify-center">
+                <User size={24} className="text-notion-gray opacity-40" />
+             </div>
              <div>
-               <h4 className="text-sm font-medium text-notion-text mb-1">Informasi</h4>
-               <p className="text-sm text-notion-gray leading-relaxed">
-                 Pastikan data STR Anda selalu diperbarui melalui menu Profil untuk kelancaran validasi logbook bulanan.
-               </p>
+                <p className="text-[10px] font-black text-notion-blue uppercase tracking-widest leading-none mb-1">PROFIL AKTIF</p>
+                <h1 className="text-xl font-serif font-black text-notion-text tracking-tight">{stats.profileName}</h1>
              </div>
           </div>
+          <button className="relative p-2 bg-white border border-[#EFEFEF] rounded-xl shadow-sm active:scale-90 transition-transform">
+             <MessageSquare size={20} className="text-notion-gray" />
+             {stats.unreadMessages > 0 && (
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-notion-red rounded-full border-2 border-white" />
+             )}
+          </button>
+        </div>
+
+        {/* Dynamic Promo/Action Card */}
+        <div className="relative group overflow-hidden bg-notion-text rounded-[2.5rem] p-8 shadow-2xl shadow-stone-200">
+           <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform duration-700">
+              <Zap size={150} />
+           </div>
+           <div className="relative z-10 space-y-4">
+              <Badge className="bg-white/10 text-white/80 border-transparent backdrop-blur-md px-3 py-1 font-bold text-[10px] tracking-widest uppercase">Target SKP 2026</Badge>
+              <h2 className="text-2xl font-serif font-bold text-white leading-tight">Terus Tingkatkan Kompetensi Anda.</h2>
+              <div className="flex items-center gap-2">
+                 <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
+                    <div className="h-full bg-notion-blue w-[45%] rounded-full shadow-[0_0_10px_rgba(0,123,255,0.5)]" />
+                 </div>
+                 <span className="text-[10px] font-black text-white/50 tracking-tighter">45%</span>
+              </div>
+              <Button className="mt-4 bg-white text-notion-text hover:bg-stone-100 rounded-2xl h-12 px-6 font-bold shadow-none">
+                 Lanjutkan Belajar <ArrowUpRight className="ml-2 w-4 h-4" />
+              </Button>
+           </div>
+        </div>
+      </section>
+
+      {/* 2. Stats Grid */}
+      <section className="grid grid-cols-2 gap-4">
+        <StatCard 
+          icon={<PenSquare size={24} className="text-notion-blue" />}
+          label="Total Kegiatan"
+          value={stats.totalActivities}
+          subLabel="Bulan ini"
+          bgColor="bg-blue-50/50"
+          borderColor="border-blue-100/50"
+        />
+        <StatCard 
+          icon={<CreditCard size={24} className="text-notion-orange" />}
+          label="Tagihan Iuran"
+          value={stats.unpaidInvoices.length}
+          subLabel="Awaiting Payment"
+          bgColor="bg-orange-50/50"
+          borderColor="border-orange-100/50"
+        />
+      </section>
+
+      {/* 3. Main Services */}
+      <section className="space-y-6">
+        <div className="flex items-center justify-between">
+           <h3 className="text-sm font-serif font-bold text-notion-text">Layanan Utama</h3>
+           <div className="w-8 h-[1px] bg-stone-200" />
+        </div>
+        <div className="grid grid-cols-4 gap-x-2 gap-y-8">
+           <ServiceIcon 
+              icon={<PenSquare size={24} />} 
+              label="Logbook" 
+              href="/logbook" 
+              color="bg-blue-500"
+           />
+           <ServiceIcon 
+              icon={<BookOpen size={24} />} 
+              label="LMS" 
+              href="/lms" 
+              color="bg-purple-500"
+           />
+           <ServiceIcon 
+              icon={<ShieldCheck size={24} />} 
+              label="Borang" 
+              href="/profile" 
+              color="bg-emerald-500"
+           />
+           <ServiceIcon 
+              icon={<LayoutDashboard size={24} />} 
+              label="Lainnya" 
+              href="/dashboard" 
+              color="bg-stone-500"
+           />
+        </div>
+      </section>
+
+      {/* 4. Recent Activity / Invoices */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between">
+            <h3 className="text-sm font-serif font-bold text-notion-text">Tagihan Terbaru</h3>
+            <Link href="/payment" className="text-[10px] font-black uppercase text-notion-blue hover:underline">Semua</Link>
+        </div>
+        
+        <div className="space-y-4">
+          {stats.unpaidInvoices.length > 0 ? (
+            stats.unpaidInvoices.map((invoice) => (
+              <div key={invoice.id} className="group relative bg-white border border-[#EFEFEF] p-5 rounded-[2rem] flex items-center gap-4 hover:shadow-xl hover:shadow-stone-200/50 hover:border-notion-blue transition-all duration-500">
+                <div className="w-14 h-14 bg-stone-50 rounded-2xl flex items-center justify-center shrink-0 border border-[#EFEFEF] group-hover:bg-blue-50 group-hover:border-blue-100 transition-colors">
+                   <CreditCard size={24} className="text-notion-gray group-hover:text-notion-blue transition-colors" />
+                </div>
+                <div className="flex-1">
+                   <h4 className="text-sm font-bold text-notion-text">{invoice.jenis_iuran}</h4>
+                   <p className="text-[10px] text-notion-gray font-bold uppercase tracking-widest mt-1 opacity-60">{invoice.periode}</p>
+                </div>
+                <div className="text-right">
+                   <div className="text-sm font-black text-notion-text">Rp{invoice.nominal.toLocaleString('id-ID')}</div>
+                   <div className="text-[9px] font-bold text-red-500 uppercase tracking-tighter mt-1">Belum Bayar</div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="py-16 text-center bg-[#F7F7F5]/50 rounded-[3rem] border border-dashed border-[#DEDEDE] space-y-3">
+               <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto shadow-sm border border-[#EFEFEF]">
+                  <ShieldCheck className="text-green-500 w-8 h-8" />
+               </div>
+               <div>
+                  <p className="text-sm font-bold text-notion-text">Administrasi Aman</p>
+                  <p className="text-[10px] text-notion-gray uppercase font-bold tracking-widest mt-1">Tidak ada tagihan tertunda saat ini</p>
+               </div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* 5. Footer CTA */}
+      <section className="pt-8">
+         <div className="p-8 bg-notion-blue/5 border border-notion-blue/10 rounded-[2.5rem] text-center space-y-4">
+            <h4 className="text-sm font-serif font-bold text-notion-text">Butuh bantuan teknis?</h4>
+            <p className="text-xs text-notion-gray leading-relaxed">Tim support kami siap membantu kendala aplikasi dan akun Anda.</p>
+            <Button variant="outline" className="rounded-2xl border-[#EFEFEF] shadow-none h-11 px-8 font-bold text-xs uppercase tracking-widest">
+               Hubungi CS
+            </Button>
+         </div>
+      </section>
+
+    </div>
+  )
+}
+
+function StatCard({ icon, label, value, subLabel, bgColor, borderColor }: any) {
+  return (
+    <div className={cn("p-6 rounded-[2.5rem] border shadow-sm transition-all hover:shadow-md", bgColor, borderColor)}>
+       <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6 border border-white/50">
+          {icon}
+       </div>
+       <p className="text-[10px] uppercase font-black text-stone-500 tracking-[0.1em] mb-1">{label}</p>
+       <div className="flex items-baseline gap-2">
+          <p className="text-3xl font-serif font-black text-notion-text">{value}</p>
+          <span className="text-[10px] font-bold text-stone-400 capitalize">{subLabel}</span>
+       </div>
+    </div>
+  )
+}
+
+function ServiceIcon({ icon, label, href, color }: any) {
+  return (
+    <Link href={href} className="flex flex-col items-center gap-3 active:scale-90 transition-transform group">
+      <div className={cn(
+        "w-16 h-16 rounded-[1.8rem] flex items-center justify-center shadow-sm border border-stone-100 transition-all duration-300",
+        "bg-white group-hover:shadow-xl group-hover:-translate-y-1 group-hover:border-transparent"
+      )}>
+        <div className={cn("w-10 h-10 rounded-2xl flex items-center justify-center text-white shadow-inner", color)}>
+          {icon}
         </div>
       </div>
-    </div>
-  )
-}
-
-function StatCard({ icon, label, value, color }: { icon: any, label: string, value: string, color: string }) {
-  return (
-    <div className={`p-4 rounded-md border text-left flex flex-col justify-between min-h-[100px] ${color}`}>
-      <div className="flex items-center gap-2 mb-3">
-        {icon}
-        <span className="text-sm text-notion-text font-medium">{label}</span>
-      </div>
-      <div>
-        <span className="text-2xl font-semibold text-notion-text">{value}</span>
-      </div>
-    </div>
-  )
-}
-
-function QuickActionCard({ href, title, icon }: { href: string, title: string, icon: string }) {
-  return (
-    <Link href={href} className="group block">
-      <div className="p-3 border border-[#EFEFEF] rounded-md bg-white hover:bg-stone-50 transition-colors flex items-center gap-3">
-        <span className="text-xl group-hover:scale-110 transition-transform">{icon}</span>
-        <span className="text-sm font-medium text-notion-text">{title}</span>
-      </div>
+      <span className="text-[10px] font-black text-notion-text text-center uppercase tracking-widest group-hover:text-notion-blue transition-colors">{label}</span>
     </Link>
   )
 }

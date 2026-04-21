@@ -61,15 +61,19 @@ const iconMap: Record<string, React.ElementType> = {
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
     </svg>
   ),
+  Building2: () => (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+    </svg>
+  ),
 }
 
 const ADMIN_NAV_ITEMS = [
   { href: '/admin/dashboard', icon: 'LayoutDashboard', label: 'Admin Dashboard' },
   { href: '/admin/members', icon: 'Users', label: 'Data PMIK' },
-  { href: '/admin/logbook', icon: 'FileText', label: 'Verifikasi Logbook' },
   { href: '/admin/lms', icon: 'GraduationCap', label: 'Manajemen LMS' },
-  { href: '/admin/payment', icon: 'CreditCard', label: 'Validasi Pembayaran' },
-  { href: '/admin/mailbox', icon: 'Inbox', label: 'Pesan / Ticketing' },
+  { href: '/admin/payment', icon: 'CreditCard', label: 'Monitoring Pembayaran' },
+  { href: '/admin/directory', icon: 'Building2', label: 'Direktori DPD/DPC' },
   { href: '/admin/master-kegiatan', icon: 'Activity', label: 'Master Kegiatan' },
   { href: '/admin/reports', icon: 'Flag', label: 'Laporan Sistem' },
   { href: '/admin/settings', icon: 'Settings', label: 'Pengaturan Admin' },

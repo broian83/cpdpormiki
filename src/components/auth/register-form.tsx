@@ -60,13 +60,13 @@ export function RegisterForm() {
 
   if (success) {
     return (
-      <div className="text-center space-y-4">
-        <div className="p-4 rounded-xl bg-teal-50 border border-teal-100 text-teal-700">
-          <p className="font-semibold text-lg">Pendaftaran Berhasil!</p>
-          <p className="text-sm mt-1">Silakan cek email Anda untuk verifikasi (jika diaktifkan) atau silakan masuk.</p>
+      <div className="text-center space-y-6 animate-in fade-in duration-500">
+        <div className="p-6 rounded-sm bg-notion-green_bg border border-notion-green/10 text-notion-green">
+          <p className="font-serif font-bold text-xl mb-2">Pendaftaran Berhasil!</p>
+          <p className="text-sm opacity-80">Silakan cek email Anda untuk verifikasi atau silakan coba masuk ke sistem.</p>
         </div>
-        <Link href="/login">
-          <Button variant="outline" className="w-full mt-4">
+        <Link href="/login" className="block">
+          <Button variant="outline" className="w-full h-10 border-[#EFEFEF] hover:bg-stone-50 rounded-sm shadow-none font-semibold">
             Ke Halaman Masuk
           </Button>
         </Link>
@@ -75,61 +75,65 @@ export function RegisterForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {error && (
-        <div className="p-4 rounded-2xl bg-rose-50 border border-rose-100 text-rose-600 text-sm font-medium animate-in fade-in duration-300">
+        <div className="p-3 rounded-sm bg-notion-red_bg border border-notion-red/10 text-notion-red text-[13px] font-medium animate-in fade-in duration-300">
           {error}
         </div>
       )}
 
-      <div className="space-y-4">
+      <div className="space-y-5">
         <Input
           label="Nama Lengkap PMIK"
-          placeholder="Sesuai ijazah/STR"
+          placeholder="Sesuai ijazah atau STR"
           error={errors.nama_pmik?.message}
           {...register('nama_pmik')}
-          className="rounded-2xl border-slate-200 focus:border-teal-500 h-12"
+          className="rounded-sm border-[#EFEFEF] focus:border-notion-gray focus:ring-0 h-10 text-[14px] shadow-none bg-stone-50/30"
         />
 
         <Input
-          label="Email"
+          label="Email Address"
           type="email"
-          placeholder="email@contoh.com"
+          placeholder="your@email.com"
           error={errors.email?.message}
           {...register('email')}
-          className="rounded-2xl border-slate-200 focus:border-teal-500 h-12"
+          className="rounded-sm border-[#EFEFEF] focus:border-notion-gray focus:ring-0 h-10 text-[14px] shadow-none bg-stone-50/30"
         />
 
-        <Input
-          label="Password"
-          type="password"
-          placeholder="Minimal 6 karakter"
-          error={errors.password?.message}
-          {...register('password')}
-          className="rounded-2xl border-slate-200 focus:border-teal-500 h-12"
-        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Input
+            label="Password"
+            type="password"
+            placeholder="••••••••"
+            error={errors.password?.message}
+            {...register('password')}
+            className="rounded-sm border-[#EFEFEF] focus:border-notion-gray focus:ring-0 h-10 text-[14px] shadow-none bg-stone-50/30"
+          />
 
-        <Input
-          label="Konfirmasi Password"
-          type="password"
-          placeholder="Ulangi password"
-          error={errors.confirmPassword?.message}
-          {...register('confirmPassword')}
-          className="rounded-2xl border-slate-200 focus:border-teal-500 h-12"
-        />
+          <Input
+            label="Konfirmasi Password"
+            type="password"
+            placeholder="••••••••"
+            error={errors.confirmPassword?.message}
+            {...register('confirmPassword')}
+            className="rounded-sm border-[#EFEFEF] focus:border-notion-gray focus:ring-0 h-10 text-[14px] shadow-none bg-stone-50/30"
+          />
+        </div>
       </div>
 
-      <Button 
-        type="submit" 
-        className="w-full bg-teal-600 hover:bg-teal-700 text-white font-black h-12 rounded-2xl shadow-lg shadow-teal-100 transition-all active:scale-95" 
-        isLoading={isLoading}
-      >
-        Bergabung Sekarang
-      </Button>
+      <div className="pt-2">
+        <Button 
+          type="submit" 
+          className="w-full bg-notion-blue text-white hover:bg-notion-blue/90 font-bold h-10 rounded-sm shadow-none text-sm transition-all active:scale-[0.98]" 
+          isLoading={isLoading}
+        >
+          Daftar Sekarang
+        </Button>
+      </div>
 
-      <p className="text-center text-sm text-slate-500 pt-2">
+      <p className="text-center text-[13px] text-notion-gray">
         Sudah punya akun?{' '}
-        <Link href="/login" className="text-teal-600 hover:text-teal-700 font-black">
+        <Link href="/login" className="text-notion-blue hover:underline font-bold">
           Masuk
         </Link>
       </p>

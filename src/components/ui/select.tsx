@@ -3,8 +3,6 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 
-let selectCounter = 0
-
 export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label?: string
   error?: string
@@ -13,8 +11,9 @@ export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElemen
 }
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-  ({ className, label, error, options, placeholder, id, ...props }, ref) => {
-    const selectId = id || `select-${++selectCounter}`
+  ({ className, label, error, options = [], placeholder, id, ...props }, ref) => {
+    const generatedId = React.useId()
+    const selectId = id || generatedId
 
     return (
       <div className="w-full">
